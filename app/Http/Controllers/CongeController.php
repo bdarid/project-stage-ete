@@ -26,7 +26,7 @@ class CongeController extends Controller
                 ->get();
         }
 
-        return view('conges.index', compact('conges'));
+        return view('conge.index', compact('conges'));
     }
 
     // 2. Soumettre une demande de congé (Employé)
@@ -70,8 +70,7 @@ class CongeController extends Controller
             'type_conge' => $request->type_conge,
         ]);
 
-        return redirect()->back()->with('success', 'Votre demande de congé a été soumise avec succès.');
-    }
+        return redirect()->route('conges')->with('success', 'Demande de congé créée avec succès.');    }
 
     // 3. Valider ou Refuser un congé (Admin / Manager uniquement)
     public function updateStatut(Request $request, $id)
@@ -93,4 +92,58 @@ class CongeController extends Controller
 
         return redirect()->back()->with('success', 'La réponse au congé a bien été enregistrée.');
     }
+    public function destroy($id)
+{
+    $conge = Conge::findOrFail($id);
+
+    // Un employé ne peut supprimer que ses propres demandes
+    if (!Auth::user()->hasRole(['Admin', 'Manager']) && $conge->users_id != Auth::id()) {
+        abort(403);
+    }
+
+    $conge->delete();
+
+    return redirect()
+        ->route('conges')
+        ->with('success', 'La demande de congé a été supprimée.');
+}
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'date_debut' => 'required|date|before_or_equal:date_fin',
+        'date_fin'   => 'required|date|after_or_equal:date_debut',
+        'type_conge' => 'required|in:annuel,maladie,jours_ferie,conge_de_maternite',
+    ]);
+
+    $conge = Conge::findOrFail($id);
+
+    if (!Auth::user()->hasRole(['Admin', 'Manager']) && $conge->users_id != Auth::id()) {
+        abort(403);
+    }
+
+    $conge->update([
+        'date_debut' => $request->date_debut,
+        'date_fin'   => $request->date_fin,
+        'type_conge' => $request->type_conge,
+    ]);
+
+    return redirect()
+        ->route('conges')
+        ->with('success', 'La demande de congé a été modifiée.');
+}
+public function edit($id)
+{
+    $conge = Conge::findOrFail($id);
+
+    // Un employé ne peut modifier que ses propres demandes
+    if (!Auth::user()->hasRole(['Admin', 'Manager']) && $conge->users_id != Auth::id()) {
+        abort(403);
+    }
+
+    return view('conge.edit', compact('conge'));
+}
+public function create()
+{
+    return view('conge.create');
+}
 }
