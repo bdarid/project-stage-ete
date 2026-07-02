@@ -20,7 +20,9 @@ class Conge extends Model
     public function pointages(){
         return $this->hasMany(Pointage::class);
     }
-    public function users(){
-        return $this->hasMany(Users::class);
+    public function user()
+    {
+        return $this->belongsTo(Users::class, 'users_id');
+    
     }
 }

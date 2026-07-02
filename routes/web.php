@@ -66,6 +66,17 @@ Route::middleware(['auth'])->group(function () {
      // Enregistrement des modifications
         Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    //conges
+    Route::get('/conges/create', [CongeController::class, 'create'])->name('conges.create');   
+    Route::get('/conges/{id}/edit', [CongeController::class, 'edit'])->name('conges.edit');
+    Route::put('/conges/{id}', [CongeController::class, 'update'])->name('conges.update');
+    Route::delete('/conges/{id}', [CongeController::class, 'destroy'])->name('conges.destroy');
+
+    Route::get('/conges', [CongeController::class, 'index'])->name('conges');
+    Route::post('/conges', [CongeController::class, 'store'])->name('conges.store');
+    Route::put('/conges/{id}/valider', [CongeController::class, 'updateStatut'])->name('conges.valider');
+
+
 
     });
 });

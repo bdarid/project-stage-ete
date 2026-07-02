@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('solde')->default(30);//en jours
             $table->foreignId('users_id')->constrained()->cascadeOnDelete();
             $table->enum('statut',['en attente', 'en cours', 'hors conge']);
-            $table->enum('reponse',['accepte','refuse']);
+            $table->enum('reponse',['accepte','refuse'])->nullable();
             $table->enum('type_conge',['annuel','maladie','jours_ferie','conge_de_maternite']);
             $table->timestamps();
         });
