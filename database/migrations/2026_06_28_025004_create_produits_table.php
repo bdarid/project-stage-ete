@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('stock_actuel')->default(0);
             $table->decimal('prix_vente_moy', 10, 2);
             $table->decimal('prix_achat_moy', 10, 2);
-            $table->float('benefice')->virtualAs('prix_vente_moy - prix_achat_moy');
+            $table->float('benefice')->virtualAs('(prix_vente_moy - prix_achat_moy)*quantite_produit');
             $table->integer('alerte_stock')->default(5);//alerte quand stock inferieure a 5
             $table->foreignId('categorie_id')->constrained()->cascadeOnDelete();
             $table->string('reference')->unique();
