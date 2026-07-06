@@ -16,14 +16,33 @@
 
             <div class="bg-white rounded-lg shadow-sm p-6">
                 <h3 class="text-lg font-semibold text-gray-700 mb-4">Accès rapide aux modules</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                {{-- Grille passée en 3 colonnes (md:grid-cols-3) --}}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    {{-- CARTE MODIFIÉE : Module Pointage avec formulaire POST --}}
+                    <div class="flex items-center p-4 bg-yellow-50 border border-yellow-200 rounded-lg transition duration-200">
+                        <div class="p-3 bg-yellow-500 text-white rounded-md mr-4 shadow-sm">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div class="flex-1">
+                            <span class="block font-bold text-yellow-900 text-lg mb-1">Ma présence</span>
+                            <form action="{{ url('pointage/entree') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="w-full text-center px-3 py-1.5 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-md text-sm transition-colors shadow-sm">
+                                    Pointer mon entrée
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
                     <a href="{{ route('produits.index') }}" class="flex items-center p-4 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg group transition duration-200">
                         <div class="p-3 bg-blue-500 text-white rounded-md mr-4 group-hover:scale-105 transition duration-200">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
                         </div>
                         <div>
-                            <span class="block font-bold text-blue-900 text-lg">Consulter le Stock Produits</span>
-                            <span class="text-sm text-blue-700">Accéder à la gestion et au catalogue des marchandises</span>
+                            <span class="block font-bold text-blue-900 text-lg">Stock Produits</span>
+                            <span class="text-sm text-blue-700">Accéder au catalogue</span>
                         </div>
                     </a>
 
@@ -33,7 +52,7 @@
                         </div>
                         <div>
                             <span class="block font-bold text-purple-900 text-lg">Demander un Congé</span>
-                            <span class="text-sm text-purple-700">Remplir et soumettre une nouvelle demande d'absence</span>
+                            <span class="text-sm text-purple-700">Soumettre une absence</span>
                         </div>
                     </a>
                 </div>

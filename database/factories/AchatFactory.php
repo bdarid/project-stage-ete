@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Achat;
 use App\Models\Categorie;
+use App\Models\Produit;
 use App\Models\Users;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,6 +25,7 @@ class AchatFactory extends Factory
             'prix_vente' => $prixAchat + $this->faker->randomFloat(2, 5, 200), // Prix de vente > prix achat
             // 'benefice' est calculé automatiquement par MySQL
             'nom_fournisseur' => $this->faker->company(),
+            'produits_id' => Produit::inRandomOrder()->first()?->id ?? Produit::factory(),
             'date_achat' => $this->faker->date(),
             'quantite' => $this->faker->numberBetween(1, 100),
             'users_id' => Users::inRandomOrder()->first()?->id ?? Users::factory(),

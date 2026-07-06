@@ -36,20 +36,35 @@ class Users extends Authenticatable
         return $this->belongsToMany(Departements::class);
     }
     public function pointages(){
-        return $this->hasMany(Pointage::class);
+        return $this->hasMany(Pointage::class,'users_id');
     }
     public function pointages_manager(){
         return $this->hasMany(Pointage::class,'manager_id');
     }
-    Public function conge(){
-        return $this->hasMany(Conge::class);
+    Public function conges(){
+        return $this->hasMany(Conge::class,'users_id');
     }
     public function taches(){
         return $this->belongsToMany(Taches::class);
+        
     }
-    public function objectifs(){
-        return $this->belongsToMany(Objectif::class);
-    }
+    public function manager()
+{
+    return $this->belongsTo(Users::class, 'manager_id');
+}
+    public function objectifs()
+{
+    return $this->belongsToMany(
+        Objectif::class,
+        'obj_users',
+        'users_id',
+        'objectif_id'
+    );
+}
+    public function employes()
+{
+    return $this->hasMany(Users::class, 'manager_id');
+}
     public function stocks() {
     return $this->hasMany(Stock::class, 'user_id');
 }

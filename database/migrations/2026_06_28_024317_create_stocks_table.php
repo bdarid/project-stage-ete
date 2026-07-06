@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('mouvement_stock'); //+20 pour achat -2 pour vente par exemple
             $table->foreignId('vente_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('achat_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('produits_id')->constrained()->cascadeOnDelete();
             $table->foreignId('users_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
