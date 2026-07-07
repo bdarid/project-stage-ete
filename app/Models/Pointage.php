@@ -21,12 +21,12 @@ class Pointage extends Model
         'conge_id',
     ];
 public function users(){
-    return $this->belongsTo(Users::class);
+    return $this->belongsTo(Users::class,'users_id');
 }
 public function manager(){
     return $this->belongsTo(Users::class,'manager_id');
 }
-public function conge(){
+public function conges(){
     return $this->belongsTo(Conge::class);
 }
 }

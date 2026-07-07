@@ -17,10 +17,16 @@ class Achat extends Model
         'quantite',
         'users_id',
         'commentaire',
+        'produits_id'
     ];
     public function categorie(){
         return $this->belongsTo(Categorie::class);
+        
     }
+    public function produit()
+{
+    return $this->belongsTo(Produit::class, 'produits_id');
+}
     public function stock()
     {
         return $this->hasOne(Stock::class);

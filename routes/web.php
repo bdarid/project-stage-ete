@@ -1,13 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AchatController;
+use App\Http\Controllers\CongeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ObjectifController;
 use App\Http\Controllers\PointageController;
 use App\Http\Controllers\ProduitController;
-use App\Http\Controllers\VenteController;
-use App\Http\Controllers\CongeController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\TacheController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VenteController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,8 +53,17 @@ Route::middleware(['auth'])->group(function () {
     // --- Tâches (Lecture et MAJ du statut par l'employé) ---
     Route::get('/taches', [TacheController::class, 'index'])->name('taches.index');
     Route::patch('/taches/{id}/statut', [TacheController::class, 'updateStatut'])->name('taches.updateStatut');
-    //création de produit et consulter le stock
+    
+    // --- Création de produit et consulter le stock ---
     Route::resource('produits', ProduitController::class);
+
+    //objectif
+    Route::resource('objectifs', ObjectifController::class);
+    //stock
+    Route::resource('stocks', StockController::class);
+    //achat
+    Route::resource('achats', AchatController::class);
+
 
 
     // ====================================================
@@ -66,19 +78,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/taches/create', [TacheController::class, 'create'])->name('taches.create');
         Route::post('/taches', [TacheController::class, 'store'])->name('taches.store');
 
-        // --- Gestion des Produits et Ventes (CRUD complet via Resources) ---
-
+        // --- Gestion des Ventes ---
         Route::resource('ventes', VenteController::class);
 
         // --- Gestion des Utilisateurs / Employés ---
-        // Petite astuce de Tech Lead : tu aurais pu utiliser "Route::resource('users', UserController::class);"
-        // pour remplacer toutes les lignes ci-dessous, mais écrire les routes manuellement est très bien aussi !
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
         Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+        // Pointage admin
+        Route::get('/admin/pointages', [App\Http\Controllers\PointageController::class, 'adminIndex'])->name('pointages.adminindex');
 
     });
 });

@@ -30,8 +30,21 @@
 
             <h3 class="text-lg font-semibold text-gray-700 mb-4">Accès Rapide aux Modules</h3>
 
-            {{-- GRILLE DES MODULES (Passée en 4 colonnes pour accueillir les Tâches) --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {{-- GRILLE DES MODULES --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col justify-between">
+                    <div>
+                        <div class="p-3 bg-yellow-100 text-yellow-600 rounded-lg w-fit mb-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Présences & Pointages</h4>
+                        <p class="text-sm text-gray-600 mb-4">Consultez les heures d'arrivée et de départ de l'équipe.</p>
+                    </div>
+                    <a href="{{ route('pointage.index') }}" class="w-full text-center px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-md text-sm transition-colors">
+                        Suivi des présences
+                    </a>
+                </div>
 
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col justify-between">
                     <div>
@@ -86,7 +99,6 @@
                 </div>
 
             </div>
-
         </div>
     </div>
 </x-app-layout>

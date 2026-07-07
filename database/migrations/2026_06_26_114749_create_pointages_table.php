@@ -17,15 +17,16 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->time('heure_arrive');
-            $table->time('heure_depart');
-            $table->integer('duree')->virtualAs('DATEDIFF(heure_arrive, heure_depart)');
+            $table->time('heure_depart')->nullable(); 
+            $table->integer('duree')->virtualAs('TIMESTAMPDIFF(MINUTE, heure_arrive, heure_depart)')->nullable();
             $table->enum('statut',['present', 'abscent', 'en conge','en retard']);
-            $table->text('Justification_retard');
-            $table->enum('type_justif_absence',['accepte','refuse']);
-            $table->string('reponse_absense');
+            $table->text('Justification_retard')->nullable();
+            $table->enum('type_justif_absence',['accepte','refuse'])->nullable();
+            $table->string('reponse_absense')->nullable();          
             $table->foreignId('users_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('manager_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('conge_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('manager_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('conge_id')->nullable()->constrained()->cascadeOnDelete();
+            
             $table->timestamps();
         });
     }

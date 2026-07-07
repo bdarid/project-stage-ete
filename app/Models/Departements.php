@@ -16,7 +16,13 @@ class Departements extends Model
     public function users(){
         return $this->belongsToMany(Users::class);
     }
-    public function objectifs(){
-        return $this->belongsToMany(Objectif::class);
-    }
+    public function objectifs()
+{
+    return $this->belongsToMany(
+        Objectif::class,
+        'obj_departement',
+        'departement_id',
+        'objectif_id'
+    );
+}
 }

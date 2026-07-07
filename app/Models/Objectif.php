@@ -21,10 +21,23 @@ class Objectif extends Model
     protected $casts = [
         'file_json' => 'array',
     ];
-    public function departement(){
-        return $this->belongsToMany(Departements::class);
-    }
-    public function users(){
-        return $this->belongsToMany(Users::class);
-    }
+    public function users()
+{
+    return $this->belongsToMany(
+        Users::class,
+        'obj_users',
+        'objectif_id',
+        'users_id'
+    );
+}
+
+public function departement()
+{
+    return $this->belongsToMany(
+        Departements::class,
+        'obj_departement',
+        'objectif_id',
+        'departement_id'
+    );
+}
 }

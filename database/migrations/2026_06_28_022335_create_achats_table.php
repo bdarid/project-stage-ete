@@ -20,6 +20,7 @@ return new class extends Migration
             $table->float('prix_achat');
             $table->float('benefice')->virtualAs('prix_vente - prix_achat');
             $table->string('nom_fournisseur');
+            $table->foreignId('produits_id')->constrained()->cascadeOnDelete();
             $table->date('date_achat');
             $table->integer('quantite');
             $table->foreignId('users_id')->constrained()->cascadeOnDelete();
