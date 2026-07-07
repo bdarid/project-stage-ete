@@ -31,6 +31,7 @@
                             type="date"
                             name="date_debut"
                             value="{{ old('date_debut') }}"
+                            id="currentDate"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                             required>
                     </div>
@@ -39,6 +40,10 @@
                         <label class="block text-sm font-medium text-gray-700">
                             Date fin
                         </label>
+                        <script>
+                             //   Automatically sets the input value to today's date
+                                document.getElementById('currentDate').valueAsDate = new Date();
+                                </script>
 
                         <input
                             type="date"

@@ -31,7 +31,6 @@ class UsersSeeder extends Seeder
     } catch (\Exception $e) {
         $this->command->error('Erreur lors de la création de l\'admin : ' . $e->getMessage());
     }
-
-    \App\Models\Users::factory(10)->create();
+Users::factory(25)->create();
 }
 }

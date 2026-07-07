@@ -19,7 +19,7 @@ return new class extends Migration
             $table->time('heure_arrive');
             $table->time('heure_depart')->nullable(); 
             $table->integer('duree')->virtualAs('TIMESTAMPDIFF(MINUTE, heure_arrive, heure_depart)')->nullable();
-            $table->enum('statut',['present', 'abscent', 'en conge','en retard']);
+            $table->enum('statut',['present', 'abscent', 'en conge','en retard'])->default('present');
             $table->text('Justification_retard')->nullable();
             $table->enum('type_justif_absence',['accepte','refuse'])->nullable();
             $table->string('reponse_absense')->nullable();          

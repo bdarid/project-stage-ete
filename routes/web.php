@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AchatController;
+use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\CongeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\ObjectifController;
 use App\Http\Controllers\PointageController;
 use App\Http\Controllers\ProduitController;
@@ -53,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
     // --- Tâches (Lecture et MAJ du statut par l'employé) ---
     Route::get('/taches', [TacheController::class, 'index'])->name('taches.index');
     Route::patch('/taches/{id}/statut', [TacheController::class, 'updateStatut'])->name('taches.updateStatut');
+    Route::resource('departements', DepartementController::class);
     
     // --- Création de produit et consulter le stock ---
     Route::resource('produits', ProduitController::class);
@@ -63,6 +66,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('stocks', StockController::class);
     //achat
     Route::resource('achats', AchatController::class);
+    //ventes
+    Route::resource('ventes', VenteController::class);
+    //categories
+    Route::resource('categories', CategorieController::class);
 
 
 
@@ -90,7 +97,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
         // Pointage admin
-        Route::get('/admin/pointages', [App\Http\Controllers\PointageController::class, 'adminIndex'])->name('pointages.adminindex');
+        Route::get('/admin/pointages', [App\Http\Controllers\PointageController::class, 'adminIndex'])->name('pointage.adminindex');
 
     });
 });

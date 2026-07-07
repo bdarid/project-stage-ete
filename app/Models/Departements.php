@@ -11,11 +11,16 @@ class Departements extends Model
     use HasFactory;
     protected $fillable = [
         'nom_departement',
-        'nbre_employes',
     ];
-    public function users(){
-        return $this->belongsToMany(Users::class);
-    }
+    public function users()
+{
+    return $this->belongsToMany(
+        Users::class,
+        'user_depart',
+        'departements_id',
+        'users_id'
+    );
+}
     public function objectifs()
 {
     return $this->belongsToMany(
