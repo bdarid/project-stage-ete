@@ -15,6 +15,6 @@ class ObjectifSeeder extends Seeder
      */
     public function run()
     {
-        Objectif::factory(10)->create();
+        Objectif::factory(15)->create();
     }
 }

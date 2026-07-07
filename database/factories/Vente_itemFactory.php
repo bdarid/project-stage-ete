@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Vente_item>
  */
-class VenteItemFactory extends Factory
+class Vente_itemFactory extends Factory
 {
     protected $model = Vente_item::class;
 

@@ -32,9 +32,15 @@ class Users extends Authenticatable
     'jours_de_repos',
         'taux_horaire',
     ];
-    public function departements(){
-        return $this->belongsToMany(Departements::class);
-    }
+    public function departements()
+{
+    return $this->belongsToMany(
+        Departements::class,
+        'user_depart',
+        'users_id',
+        'departements_id'
+    );
+}
     public function pointages(){
         return $this->hasMany(Pointage::class,'users_id');
     }

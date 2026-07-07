@@ -33,7 +33,7 @@
 
                     <div class="mb-4">
                         <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe provisoire</label>
-                        <input type="password" name="password" id="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                        <input type="password" name="password" placeholder="password..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 mb-6">
@@ -43,8 +43,9 @@
                         </div>
                         <div>
                             <label for="date_naissance" class="block text-sm font-medium text-gray-700">Date de naissance</label>
-                            <input type="date" name="date_naissance" id="date_naissance" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            <input type="date" name="date_naissance" value="2010-01-01" id="date_naissance" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                         </div>
+                                
                     </div>
 
                     <div class="flex justify-end gap-3">

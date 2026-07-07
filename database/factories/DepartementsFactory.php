@@ -22,8 +22,7 @@ class DepartementsFactory extends Factory
                 'Marketing',
                 'Direction Générale'
             ]),
-            //nombre d'employés entre 2 et 50
-            'nbre_employes' => $this->faker->numberBetween(2, 50),
+
         ];
     }
 }

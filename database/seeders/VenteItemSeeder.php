@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Vente_item;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,6 @@ class VenteItemSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Vente_item::factory(10)->create();
     }
 }

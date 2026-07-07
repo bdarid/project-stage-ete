@@ -2,21 +2,17 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Users; // <--- MODIFIÉ : On importe Users
+use App\Models\Users; 
+use App\Models\Departements;
+use App\Models\Objectif;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
     public function run()
     {
+        // 1. On lance tous les seeders (les données sont créées ici)
         $this->call([
             DepartementsSeeder::class,
             UsersSeeder::class,
@@ -32,14 +28,41 @@ class DatabaseSeeder extends Seeder
             VenteSeeder::class,
         ]);
 
+        // 2. On récupère les collections pour faire les liaisons
+        $users = Users::all();
+        $departements = Departements::all();
+        $objectifs = Objectif::all();
+
+        // 3. Liaison Users <-> Departements (Sécurisée)
+        if ($users->isNotEmpty() && $departements->isNotEmpty()) {
+            $users->each(function ($user) use ($departements) {
+                // On attache aléatoirement 1 ou 2 départements
+                $user->departements()->attach(
+                    $departements->random(rand(1, min(2, $departements->count())))->pluck('id')->toArray()
+                );
+            });
+        }
+
+        // 4. Liaison Departements <-> Objectifs (Sécurisée)
+        if ($departements->isNotEmpty() && $objectifs->isNotEmpty()) {
+            $departements->each(function ($dep) use ($objectifs) {
+                // On attache aléatoirement 1 à 3 objectifs
+                $dep->objectifs()->attach(
+                    $objectifs->random(rand(1, min(3, $objectifs->count())))->pluck('id')->toArray()
+                );
+            });
+        }
+
+        // 5. Gestion des Rôles (Ta logique existante)
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         $adminRole = Role::firstOrCreate(['name' => 'Admin']);
         $managerRole = Role::firstOrCreate(['name' => 'Manager']);
         $employeRole = Role::firstOrCreate(['name' => 'Employe']);
 
-        // L'admin est déjà créé dans UsersSeeder, on le récupère juste
         $adminUser = Users::where('email', 'admin@test.com')->first();
-        $adminUser->assignRole($adminRole);
+        if ($adminUser) {
+            $adminUser->assignRole($adminRole);
+        }
     }
 }

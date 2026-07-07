@@ -3,18 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\Departements;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DepartementsSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run() : void
+    public function run(): void
     {
+        // Créer les départements
         Departements::factory(10)->create();
     }
 }
