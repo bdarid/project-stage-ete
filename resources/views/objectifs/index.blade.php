@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-2xl text-gray-800">
+            <h2 class="font-semibold text-2xl text-white">
                 Gestion des Objectifs
             </h2>
 
@@ -12,7 +12,7 @@
         </div>
     </x-slot>
 
-    <div class="py-8">
+    <div class="py-8 text-black">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             @if(session('success'))

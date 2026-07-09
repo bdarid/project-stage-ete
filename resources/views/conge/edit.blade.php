@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-white leading-tight">
             {{ __('Modifier une demande de congé') }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12 text-black">
 
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
 
@@ -115,14 +115,14 @@
         <h3 class="text-lg font-medium text-gray-900 mb-4">
             Décision de la direction (Admin/Manager)
         </h3>
-        
+
         <div class="flex gap-4">
             {{-- Formulaire pour ACCEPTER --}}
             <form action="{{ route('conges.valider', $conge->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="reponse" value="accepte">
-                <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir ACCEPTER cette demande ?')" 
+                <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir ACCEPTER cette demande ?')"
                         class="px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 shadow-sm">
                     ✓ Accepter la demande
                 </button>
@@ -133,7 +133,7 @@
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="reponse" value="refuse">
-                <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir REFUSER cette demande ?')" 
+                <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir REFUSER cette demande ?')"
                         class="px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 shadow-sm">
                     ✗ Refuser la demande
                 </button>

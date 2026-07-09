@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-white">
             {{ __('Gestion des Employés') }}
         </h2>
     </x-slot>
@@ -29,6 +29,7 @@
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rôle</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date de Naissance</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date d'embauche</th>
                             <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -45,6 +46,22 @@
 
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-500">{{ $user->email }}</div>
+                                </td>
+
+                                {{-- CELLULE REMPLIE : Affichage dynamique des rôles Spatie --}}
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @if($user->getRoleNames()->isNotEmpty())
+                                        @foreach($user->getRoleNames() as $role)
+                                            <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
+                                                {{ $role == 'Admin' ? 'bg-red-100 text-red-800' : ($role == 'Manager' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800') }}">
+                                                {{ ucfirst($role) }}
+                                            </span>
+                                        @endforeach
+                                    @else
+                                        <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                            Aucun rôle
+                                        </span>
+                                    @endif
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -69,7 +86,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">
+                                {{-- CORRECTION : Changement du colspan à 6 pour couvrir tout le tableau --}}
+                                <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
                                     Aucun employé enregistré pour le moment.
                                 </td>
                             </tr>

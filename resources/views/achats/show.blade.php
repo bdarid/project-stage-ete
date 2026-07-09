@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-2xl text-gray-800">
+            <h2 class="font-semibold text-2xl text-white">
                 Détails de l'Achat
             </h2>
 
@@ -30,7 +30,7 @@
                             Produit
                         </label>
 
-                        <p class="mt-1 text-lg">
+                        <p class="mt-1 text-lg text-black">
                             {{ $achat->produit->nom_produit ?? '-' }}
                         </p>
                     </div>
@@ -40,7 +40,7 @@
                             Catégorie
                         </label>
 
-                        <p class="mt-1 text-lg">
+                        <p class="mt-1 text-lg text-black">
                             {{ $achat->categorie->nom_categorie ?? '-' }}
                         </p>
                     </div>
@@ -50,7 +50,7 @@
                             Fournisseur
                         </label>
 
-                        <p class="mt-1 text-lg">
+                        <p class="mt-1 text-lg text-black">
                             {{ $achat->nom_fournisseur }}
                         </p>
                     </div>
@@ -60,7 +60,7 @@
                             Utilisateur
                         </label>
 
-                        <p class="mt-1 text-lg">
+                        <p class="mt-1 text-lg text-black">
                             {{ $achat->users->name_users ?? '-' }}
                         </p>
                     </div>
@@ -142,7 +142,7 @@
                             Date d'achat
                         </label>
 
-                        <p class="mt-1">
+                        <p class="mt-1 text-black">
                             {{ \Carbon\Carbon::parse($achat->date_achat)->format('d/m/Y') }}
                         </p>
                     </div>
@@ -155,7 +155,7 @@
                         Commentaire
                     </label>
 
-                    <div class="mt-2 bg-gray-100 rounded-lg p-4 min-h-[120px]">
+                    <div class="mt-2 bg-gray-100 rounded-lg p-4 min-h-[120px] text-black">
                         {{ $achat->commentaire ?: 'Aucun commentaire.' }}
                     </div>
 

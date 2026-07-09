@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-gray-800">
+        <h2 class="font-semibold text-2xl text-white">
             Détails du Département
         </h2>
     </x-slot>
@@ -15,29 +15,29 @@
                     {{-- Informations --}}
                     <div>
 
-                        <h3 class="text-xl font-bold mb-6">
+                        <h3 class="text-xl font-bold mb-6 text-black" >
                             Informations
                         </h3>
 
-                        <div class="space-y-4">
+                        <div class="space-y-4 text-black" >
 
                             <div>
-                                <span class="font-semibold">Nom :</span>
+                                <span class="font-semibold text-black">Nom :</span>
                                 <span>{{ $departement->nom_departement }}</span>
                             </div>
 
                             <div>
-                                <span class="font-semibold">Nombre d'employés :</span>
+                                <span class="font-semibold text-black">Nombre d'employés :</span>
                                 <span>{{ $departement->users->count()}}</span>
                             </div>
 
                             <div>
-                                <span class="font-semibold">Nombre d'objectifs :</span>
+                                <span class="font-semibold text-black">Nombre d'objectifs :</span>
                                 <span>{{ $departement->objectifs->count() }}</span>
                             </div>
 
                             <div>
-                                <span class="font-semibold">Créé le :</span>
+                                <span class="font-semibold text-black">Créé le :</span>
                                 <span>{{ $departement->created_at->format('d/m/Y H:i') }}</span>
                             </div>
 
@@ -48,13 +48,13 @@
                     {{-- Employés --}}
                     <div>
 
-                        <h3 class="text-xl font-bold mb-6">
+                        <h3 class="text-xl font-bold mb-6 text-black">
                             Employés
                         </h3>
 
                         @forelse($departement->users as $user)
 
-                            <div class="border rounded-lg p-3 mb-2">
+                            <div class="border rounded-lg p-3 mb-2 text-black">
 
                                 <div class="font-semibold">
                                     {{ $user->name }}
@@ -68,7 +68,7 @@
 
                         @empty
 
-                            <p class="text-gray-500">
+                            <p class=" text-black">
                                 Aucun employé.
                             </p>
 
@@ -79,7 +79,7 @@
                 </div>
 
                 {{-- Objectifs --}}
-                <div class="mt-10">
+                <div class="mt-10 text-black">
 
                     <h3 class="text-xl font-bold mb-6">
                         Objectifs associés

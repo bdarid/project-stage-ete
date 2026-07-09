@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-2xl text-gray-800">
+            <h2 class="font-semibold text-2xl text-white">
                 Gestion des Catégories
             </h2>
             <a href="{{ route('categories.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium shadow-sm transition-colors">
@@ -18,7 +18,7 @@
                     {{ session('success') }}
                 </div>
             @endif
-            
+
             @if(session('error'))
                 <div class="mb-4 bg-red-100 border border-red-300 text-red-700 p-4 rounded-lg shadow-sm">
                     {{ session('error') }}

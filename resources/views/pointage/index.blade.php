@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-white leading-tight">
             {{ __('Pointage Quotidien') }}
         </h2>
     </x-slot>
@@ -67,7 +67,7 @@
                             </div>
                             <h4 class="text-2xl font-bold text-gray-800 mb-2">Journée terminée !</h4>
                             <p class="text-gray-500 mb-8">Merci et à demain.</p>
-                            
+
                             <div class="flex flex-col sm:flex-row justify-center sm:space-x-12 space-y-4 sm:space-y-0 text-gray-700 bg-gray-50 p-6 rounded-lg inline-flex w-full sm:w-auto">
                                 <div>
                                     <span class="block text-xs uppercase tracking-wider text-gray-500 mb-1">Heure d'arrivée</span>

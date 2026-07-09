@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-gray-800">Enregistrer une Nouvelle Vente</h2>
+        <h2 class="font-semibold text-2xl text-white">Enregistrer une Nouvelle Vente</h2>
     </x-slot>
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            
+
             @if($errors->any())
                 <div class="mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-sm">
                     <ul class="list-disc pl-5">
@@ -16,9 +16,9 @@
                 </div>
             @endif
 
-            <form action="{{ route('ventes.store') }}" method="POST" class="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+            <form action="{{ route('ventes.store') }}" method="POST" class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 text-black">
                 @csrf
-                
+
                 <h3 class="text-lg font-bold text-gray-700 mb-4 border-b pb-2">Informations Générales</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <div>
@@ -75,7 +75,7 @@
                                     <option value="">Sélectionner un produit...</option>
                                     @foreach($achats as $achat)
                                         <option value="{{ $achat->id }}">
-                                            Lot #{{ $achat->id }} - {{ $achat->produit->nom_produit ?? 'Produit Inconnu' }} 
+                                            Lot #{{ $achat->id }} - {{ $achat->produit->nom_produit ?? 'Produit Inconnu' }}
                                             (Stock dispo: {{ $achat->produit->stock_actuel ?? 0 }})
                                         </option>
                                     @endforeach
@@ -112,14 +112,14 @@
             const tbody = document.getElementById('lignes-articles');
             const premiereLigne = tbody.querySelector('.article-row');
             const nouvelleLigne = premiereLigne.cloneNode(true);
-            
+
             // Mise à jour des index dans les attributs name (ex: items[0][quantite] devient items[1][quantite])
             nouvelleLigne.querySelectorAll('input, select').forEach(element => {
                 element.name = element.name.replace(/\[0\]/, `[${indexLigne}]`);
                 if (element.tagName === 'INPUT') element.value = '';
                 if (element.name.includes('quantite')) element.value = '1';
             });
-            
+
             tbody.appendChild(nouvelleLigne);
             indexLigne++;
         }

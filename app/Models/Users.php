@@ -9,9 +9,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Notifications\ResetPasswordNotification;
 
 class Users extends Authenticatable
 {
+    use Notifiable;
     use HasFactory;
     use HasRoles;
     protected $table = 'users';
@@ -52,7 +54,7 @@ class Users extends Authenticatable
     }
     public function taches(){
         return $this->belongsToMany(Taches::class);
-        
+
     }
     public function manager()
 {
@@ -82,6 +84,10 @@ public function ventes() {
 public function achats() {
     return $this->hasMany(Achat::class, 'user_id');
 }
+public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
 
 public function produits() {
     return $this->hasMany(Produit::class, 'user_id');

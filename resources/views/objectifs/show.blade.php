@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-2xl text-gray-800">
+            <h2 class="font-semibold text-2xl text-white">
                 Détails de l'Objectif
             </h2>
 
@@ -19,7 +19,7 @@
         </div>
     </x-slot>
 
-    <div class="py-8">
+    <div class="py-8 text-black">
         <div class="max-w-6xl mx-auto">
 
             <div class="bg-white shadow rounded-xl p-8">

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-white leading-tight">
             {{ __('Supervision des Pointages') }}
         </h2>
     </x-slot>
@@ -30,7 +30,7 @@
                                     <td class="px-6 py-4 font-medium text-gray-900">
                                         {{ \Carbon\Carbon::parse($pointage->date)->format('d/m/Y') }}
                                     </td>
-                                    
+
                                     <td class="px-6 py-4">
                                         {{ $pointage->users->name ?? 'Utilisateur introuvable' }}
                                     </td>

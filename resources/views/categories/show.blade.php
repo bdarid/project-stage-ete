@@ -4,7 +4,7 @@
             <a href="{{ route('categories.index') }}" class="text-gray-500 hover:text-gray-700">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             </a>
-            <h2 class="font-semibold text-2xl text-gray-800">
+            <h2 class="font-semibold text-2xl text-white">
                 Détails de la Catégorie
             </h2>
         </div>
@@ -12,11 +12,11 @@
 
     <div class="py-8">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            
+
             <div class="md:col-span-1">
                 <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
                     <h3 class="text-xl font-bold text-gray-800 mb-4">{{ $categorie->nom_categorie }}</h3>
-                    
+
                     <div class="mb-4">
                         <span class="text-xs font-semibold text-gray-500 uppercase">Hiérarchie</span>
                         <p class="mt-1">
@@ -34,7 +34,7 @@
                             {{ $categorie->description_categorie ?? 'Aucune description fournie.' }}
                         </p>
                     </div>
-                    
+
                     <div class="pt-4 border-t border-gray-100">
                         <a href="{{ route('categories.edit', $categorie->id) }}" class="block text-center w-full bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
                             Modifier cette catégorie
@@ -44,7 +44,7 @@
             </div>
 
             <div class="md:col-span-2 space-y-6">
-                
+
                 <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
                     <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
                         <h4 class="font-bold text-gray-700">Sous-catégories ({{ $categorie->sousCategories->count() }})</h4>

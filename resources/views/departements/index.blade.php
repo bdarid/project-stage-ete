@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-gray-800">
+        <h2 class="font-semibold text-2xl text-white">
             Gestion des Départements
         </h2>
     </x-slot>
@@ -17,7 +17,7 @@
             <div class="bg-white shadow-lg rounded-xl overflow-hidden">
 
                 <div class="flex justify-between items-center p-6 border-b">
-                    <h3 class="text-xl font-bold">
+                    <h3 class="text-xl font-bold text-black">
                         Liste des Départements
                     </h3>
                     <a href="{{ route('departements.create') }}"
@@ -30,27 +30,27 @@
                     <table class="min-w-full">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th class="px-6 py-3 text-left">#</th>
-                                <th class="px-6 py-3 text-left">Département</th>
-                                <th class="px-6 py-3 text-center">Employés</th>
-                                <th class="px-6 py-3 text-center">Objectifs</th>
-                                <th class="px-6 py-3 text-center">Actions</th>
+                                <th class="px-6 py-3 text-left text-black" >#</th>
+                                <th class="px-6 py-3 text-left text-black">Département</th>
+                                <th class="px-6 py-3 text-center text-black">Employés</th>
+                                <th class="px-6 py-3 text-center text-black">Objectifs</th>
+                                <th class="px-6 py-3 text-center text-black">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                         @forelse($departements as $departement)
-                            <tr class="border-b hover:bg-gray-50">
+                            <tr class="border-b hover:bg-gray-50 text-black">
                                 <td class="px-6 py-4">
                                     {{ $departement->id }}
                                 </td>
                                 <td class="px-6 py-4 font-semibold">
                                     {{ $departement->nom_departement }}
                                 </td>
-                                
+
                                 <td class="px-6 py-4 text-center font-medium text-gray-700">
                                     {{$departement->users->count() }}
                                 </td>
-                                
+
                                 <td class="px-6 py-4 text-center font-medium text-gray-700">
                                     {{ $departement->objectifs->count() }}
                                 </td>

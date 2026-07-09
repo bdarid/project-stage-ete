@@ -3,42 +3,55 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Users;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class PasswordResetLinkController extends Controller
 {
     /**
-     * Display the password reset link request view.
+     * Affiche la vue de demande de réinitialisation.
      */
-    public function create(): View
+    public function create()
     {
         return view('auth.forgot-password');
     }
 
     /**
-     * Handle an incoming password reset link request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * Gère la demande, génère le mot de passe et envoie l'e-mail.
      */
     public function store(Request $request): RedirectResponse
     {
+        // 1. On valide que l'adresse e-mail a bien été saisie
         $request->validate([
             'email' => ['required', 'email'],
         ]);
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        // 2. On cherche si l'employé existe dans la base de données
+        $user = Users::where('email', $request->email)->first();
 
-        return $status == Password::RESET_LINK_SENT
-                    ? back()->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                            ->withErrors(['email' => __($status)]);
+        // Si l'utilisateur n'existe pas, on retourne une erreur propre
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'Aucun compte ERP n\'est associé à cette adresse e-mail.',
+            ]);
+        }
+
+        // 3. L'ASTUCE : On génère un mot de passe aléatoire de 8 caractères
+        $nouveau_mot_de_passe = Str::random(8);
+
+        // 4. On met à jour son mot de passe directement dans la table `users`
+        $user->update([
+            'password' => Hash::make($nouveau_mot_de_passe),
+        ]);
+
+        // 5. On déclenche notre notification modifiée en lui passant le mot de passe en clair
+        $user->notify(new ResetPasswordNotification($nouveau_mot_de_passe));
+
+        // 6. On redirige l'utilisateur avec un message de succès vert
+        return back()->with('status', 'Un nouveau mot de passe automatique vous a été envoyé.');
     }
 }

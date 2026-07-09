@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -16,7 +18,8 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users.create');
+        $roles = Role::all();
+        return view('users.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -25,41 +28,40 @@ class UserController extends Controller
         $request->validate([
             'name_users' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
             'CIN' => 'required|string|unique:users,CIN',
             'date_naissance' => 'required|date',
+            'role' => 'required|exists:roles,name'
         ]);
+        // 2. On génère un mot de passe aléatoire de 10 caractères
+        $password_clair = \Illuminate\Support\Str::random(10);
 
         // 2. Création sécurisée de l'utilisateur
         $user = Users::create([
             'name_users' => $request->name_users,
             'email' => $request->email,
-            'password' => bcrypt($request->password), // Utilisation du helper global pour éviter le bug d'import de Hash
+            'password' => \Illuminate\Support\Facades\Hash::make($password_clair),
             'CIN' => $request->CIN,
             'date_naissance' => $request->date_naissance,
-             // Valeur par défaut pour correspondre à ton index.blade.php
         ]);
 
-        // 3. Attribution du rôle automatique via Spatie si nécessaire
-        if ($user && method_exists($user, 'assignRole')) {
-            try {
-                $user->assignRole('Employe');
-            } catch (\Exception $e) {
-                // Évite de bloquer si le rôle n'est pas encore créé dans les seeders
-            }
-        }
-
+        $user->assignRole($request->role);
+        // 5. Envoi de l'email de bienvenue
+        \Illuminate\Support\Facades\Mail::to($user->email)->send(
+            new \App\Mail\WelcomeUserMail($user, $password_clair, $request->role)
+        );
         // 4. Redirection vers le tableau
-        return redirect()->route('users.index')->with('success', 'Nouvel employé ajouté avec succès !');
+        return redirect()->route('users.index')->with('success', 'Employé créé avec succès et email envoyé !');
     }
-    // NOUVEAU : Affiche le formulaire de modification
+
+    // Affiche le formulaire de modification avec les rôles
     public function edit($id)
     {
         $user = Users::findOrFail($id);
-        return view('users.edit', compact('user'));
+        $roles = Role::all(); // Récupère tous les rôles pour la liste déroulante
+        return view('users.edit', compact('user', 'roles'));
     }
 
-    // NOUVEAU : Sauvegarde les modifications
+    // Sauvegarde les modifications (y compris le rôle)
     public function update(Request $request, $id)
     {
         $user = Users::findOrFail($id);
@@ -70,26 +72,21 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,'.$id,
             'CIN' => 'required|string|unique:users,CIN,'.$id,
             'date_naissance' => 'required|date',
-            'password' => 'nullable|string|min:8', // nullable = optionnel
+            'role' => 'required|exists:roles,name' // Validation du rôle
         ]);
 
-        // Mise à jour des informations
-        $user->name_users = $request->name_users;
-        $user->email = $request->email;
-        $user->CIN = $request->CIN;
-        $user->date_naissance = $request->date_naissance;
+        $user->update([
+            'name_users' => $request->name_users,
+            'email' => $request->email,
+            'CIN' => $request->CIN,
+            'date_naissance' => $request->date_naissance,
+        ]);
+        $user->syncRoles($request->role);
 
-        // On modifie le mot de passe QUE s'il a été rempli dans le formulaire
-        if ($request->filled('password')) {
-            $user->password = bcrypt($request->password);
-        }
-
-        $user->save();
-
-        return redirect()->route('users.index')->with('success', 'Employé mis à jour avec succès !');
+        return redirect()->route('users.index')->with('success', 'Employé et rôle mis à jour avec succès !');
     }
 
-    // NOUVEAU : Supprime un employé
+    // Supprime un employé
     public function destroy($id)
     {
         $user = Users::findOrFail($id);

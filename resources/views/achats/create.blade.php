@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-2xl text-gray-800">
+            <h2 class="font-semibold text-2xl text-white">
                 Nouvel Achat
             </h2>
 
@@ -12,7 +12,7 @@
         </div>
     </x-slot>
 
-    <div class="py-8">
+    <div class="py-8 text-black">
         <div class="max-w-5xl mx-auto">
 
             @if ($errors->any())
@@ -42,7 +42,7 @@
                             <select
                                 id="produit"
                                 name="produits_id"
-                                class="w-full mt-2 rounded-lg border-gray-300 shadow-sm"
+                                class="w-full mt-2 rounded-lg border-gray-300 shadow-sm text-black"
                                 required>
 
                                 <option value="">-- Choisir un produit --</option>
@@ -77,7 +77,7 @@
 
                             <input
                                 id="categorie_nom"
-                                class="w-full mt-2 rounded-lg border-gray-300 bg-gray-100 shadow-sm"
+                                class="w-full mt-2 rounded-lg border-gray-300 bg-gray-100 shadow-sm "
                                 readonly>
 
                             <input

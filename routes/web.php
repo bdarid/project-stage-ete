@@ -56,7 +56,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/taches', [TacheController::class, 'index'])->name('taches.index');
     Route::patch('/taches/{id}/statut', [TacheController::class, 'updateStatut'])->name('taches.updateStatut');
     Route::resource('departements', DepartementController::class);
-    
+
     // --- Création de produit et consulter le stock ---
     Route::resource('produits', ProduitController::class);
 
@@ -84,10 +84,6 @@ Route::middleware(['auth'])->group(function () {
         // --- Tâches (Création et assignation uniquement par l'Admin/Manager) ---
         Route::get('/taches/create', [TacheController::class, 'create'])->name('taches.create');
         Route::post('/taches', [TacheController::class, 'store'])->name('taches.store');
-
-        // --- Gestion des Ventes ---
-        Route::resource('ventes', VenteController::class);
-
         // --- Gestion des Utilisateurs / Employés ---
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');

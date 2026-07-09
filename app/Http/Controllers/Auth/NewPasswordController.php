@@ -37,7 +37,7 @@ class NewPasswordController extends Controller
 
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
+        // databaseOtherwise we will parse the error and return the response.
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user) use ($request) {
@@ -53,9 +53,20 @@ class NewPasswordController extends Controller
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
-        return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                            ->withErrors(['email' => __($status)]);
+        if ($status == Password::PASSWORD_RESET) {
+            // Obtenir l'utilisateur qui vient de réinitialiser son mot de passe
+            $user = \App\Models\Users::where('email', $request->email)->first();
+
+            if ($user) {
+                // Connecter automatiquement l'utilisateur
+                \Illuminate\Support\Facades\Auth::login($user);
+            }
+
+            // Rediriger vers notre carrefour intelligent /dashboard
+            return redirect('/dashboard')->with('status', __($status));
+        }
+
+        return back()->withInput($request->only('email'))
+            ->withErrors(['email' => __($status)]);
     }
 }

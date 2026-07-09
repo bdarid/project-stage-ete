@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-2xl text-gray-800">
+            <h2 class="font-semibold text-2xl text-white">
                 Détails du Mouvement de Stock
             </h2>
 
@@ -32,7 +32,7 @@
                             Produit
                         </label>
 
-                        <div class="bg-gray-100 rounded-lg p-3">
+                        <div class="bg-gray-100 rounded-lg p-3 text-black">
                             {{ $stock->produit->nom_produit ?? 'Non défini' }}
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                             Catégorie
                         </label>
 
-                        <div class="bg-gray-100 rounded-lg p-3">
+                        <div class="bg-gray-100 rounded-lg p-3 text-black">
                             {{ $stock->categorie->nom_categorie ?? 'Non définie' }}
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                             Type de mouvement
                         </label>
 
-                        <div class="bg-gray-100 rounded-lg p-3">
+                        <div class="bg-gray-100 rounded-lg p-3 text-black">
 
                             @if($stock->achat_id)
 
@@ -116,7 +116,7 @@
                             Achat associé
                         </label>
 
-                        <div class="bg-gray-100 rounded-lg p-3">
+                        <div class="bg-gray-100 rounded-lg p-3 text-black">
 
                             @if($stock->achat)
 
@@ -137,7 +137,7 @@
                             Vente associée
                         </label>
 
-                        <div class="bg-gray-100 rounded-lg p-3">
+                        <div class="bg-gray-100 rounded-lg p-3 text-black">
 
                             @if($stock->vente)
 
@@ -158,7 +158,7 @@
                             Utilisateur
                         </label>
 
-                        <div class="bg-gray-100 rounded-lg p-3">
+                        <div class="bg-gray-100 rounded-lg p-3 text-black">
                             {{ $stock->users->name_users ?? 'Inconnu' }}
                         </div>
                     </div>
@@ -169,7 +169,7 @@
                             Date de création
                         </label>
 
-                        <div class="bg-gray-100 rounded-lg p-3">
+                        <div class="bg-gray-100 rounded-lg p-3 text-black">
                             {{ $stock->created_at->format('d/m/Y à H:i') }}
                         </div>
                     </div>

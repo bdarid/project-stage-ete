@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-2xl text-gray-800">
+            <h2 class="font-semibold text-2xl text-white">
                 Gestion des Stocks
             </h2>
 
@@ -25,7 +25,7 @@
 
                 <table class="min-w-full divide-y divide-gray-200">
 
-                    <thead class="bg-gray-100">
+                    <thead class="bg-gray-100 text-black">
                         <tr>
 
                             <th class="px-6 py-3 text-left text-xs font-bold uppercase">
@@ -59,7 +59,7 @@
                         </tr>
                     </thead>
 
-                    <tbody class="divide-y divide-gray-100">
+                    <tbody class="divide-y divide-gray-100 text-black">
 
                     @forelse($stocks as $stock)
 

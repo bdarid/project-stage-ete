@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-gray-800">
+        <h2 class="font-semibold text-2xl text-white">
             Modifier le Département : {{ $departement->nom_departement }}
         </h2>
     </x-slot>
@@ -8,7 +8,7 @@
     <div class="py-8">
         <div class="max-w-5xl mx-auto">
             <div class="bg-white shadow-lg rounded-xl p-8">
-                
+
                 <form action="{{ route('departements.update', $departement->id) }}" method="POST">
                     @csrf
                     @method('PUT')
@@ -16,15 +16,15 @@
                     {{-- Nom du département --}}
                     <div class="mb-6">
                         <label class="font-semibold text-gray-700">Nom du département</label>
-                        <input type="text" name="nom_departement" 
-                               value="{{ old('nom_departement', $departement->nom_departement) }}" 
-                               class="w-full border rounded-lg mt-2 px-4 py-2" required>
+                        <input type="text" name="nom_departement"
+                               value="{{ old('nom_departement', $departement->nom_departement) }}"
+                               class="w-full border rounded-lg mt-2 px-4 py-2 text-black" required>
                     </div>
 
                     {{-- Employés --}}
                     <div class="mb-6">
                         <label class="font-semibold text-gray-700">Employés</label>
-                        <div class="border rounded-lg p-4 mt-2 max-h-48 overflow-y-auto bg-gray-50 grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="border rounded-lg p-4 mt-2 max-h-48 overflow-y-auto bg-gray-50 grid grid-cols-1 md:grid-cols-2 gap-3 text-black">
                             @foreach($users as $user)
                                 <label class="flex items-center gap-3 bg-white p-2.5 rounded-md border shadow-sm cursor-pointer hover:border-blue-300">
                                     <input type="checkbox" name="users[]" value="{{ $user->id }}"
@@ -40,7 +40,7 @@
                     {{-- Objectifs --}}
                     <div class="mb-6">
                         <label class="font-semibold text-gray-700">Objectifs</label>
-                        <div class="border rounded-lg p-4 mt-2 max-h-48 overflow-y-auto bg-gray-50 grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="border rounded-lg p-4 mt-2 max-h-48 overflow-y-auto bg-gray-50 grid grid-cols-1 md:grid-cols-2 gap-3 text-black">
                             @foreach($objectifs as $objectif)
                                 <label class="flex items-center gap-3 bg-white p-2.5 rounded-md border shadow-sm cursor-pointer hover:border-purple-300">
                                     <input type="checkbox" name="objectifs[]" value="{{ $objectif->id }}"

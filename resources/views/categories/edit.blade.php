@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-gray-800">Modifier la Catégorie : {{ $categorie->nom_categorie }}</h2>
+        <h2 class="font-semibold text-2xl text-white">Modifier la Catégorie : {{ $categorie->nom_categorie }}</h2>
     </x-slot>
 
     <div class="py-8">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            
+
             @if($errors->any())
                 <div class="mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-sm">
                     <ul class="list-disc pl-5">
@@ -16,10 +16,10 @@
                 </div>
             @endif
 
-            <form action="{{ route('categories.update', $categorie->id) }}" method="POST" class="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+            <form action="{{ route('categories.update', $categorie->id) }}" method="POST" class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 text-black">
                 @csrf
                 @method('PUT')
-                
+
                 <div class="grid grid-cols-1 gap-6 mb-6">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Nom de la Catégorie <span class="text-red-500">*</span></label>

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-white leading-tight">
             {{ __('Gestion des Congés') }}
         </h2>
     </x-slot>
@@ -75,31 +75,31 @@
 
                             <tr>
 
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4 text-black">
                                     {{ $conge->user->name_users ?? '-' }}
                                 </td>
 
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4 text-black">
                                     {{ ucfirst(str_replace('_',' ',$conge->type_conge)) }}
                                 </td>
 
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4 text-black">
                                     {{ $conge->date_debut }}
                                 </td>
 
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4 text-black">
                                     {{ $conge->date_fin }}
                                 </td>
 
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4 text-black">
                                     {{ $conge->duree }} jour(s)
                                 </td>
 
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4 text-black">
                                     {{ $conge->solde }} jour(s)
                                 </td>
 
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4 text-black">
 
                                     @if($conge->statut=="en attente")
                                         <span class="px-2 py-1 rounded bg-yellow-100 text-yellow-700">
@@ -122,7 +122,7 @@
 
                                 </td>
 
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4 text-black">
 
                                     @if($conge->reponse)
 
