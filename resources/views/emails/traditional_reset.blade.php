@@ -3,7 +3,7 @@
 
     Bonjour **{{ $user->name_users ?? $user->name }}**,
 
-    Une demande de réinitialisation de mot de passe a été effectuée pour votre compte sur la plateforme **ENSAM ERP**.
+    Une demande de réinitialisation de mot de passe a été effectuée pour votre compte sur la plateforme **ERP**.
 
     Conformément aux directives de l'établissement, un nouveau mot de passe vous a été attribué de manière automatique :
 

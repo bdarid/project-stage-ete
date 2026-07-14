@@ -6,6 +6,7 @@ use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use App\Notifications\WelcomeNotification;
 
 class UserController extends Controller
 {
@@ -37,7 +38,7 @@ class UserController extends Controller
         // 2. On génère un mot de passe aléatoire de 10 caractères
         $password_clair = \Illuminate\Support\Str::random(10);
 
-        // 2. Création sécurisée de l'utilisateur
+        // 3. Création sécurisée de l'utilisateur
         $user = Users::create([
             'name_users' => $request->name_users,
             'email' => $request->email,
@@ -47,14 +48,13 @@ class UserController extends Controller
         ]);
 
         $user->assignRole($request->role);
-        // 5. Envoi de l'email de bienvenue
-        \Illuminate\Support\Facades\Mail::to($user->email)->send(
-            new \App\Mail\WelcomeUserMail($user, $password_clair, $request->role)
-        );
-        // 4. Redirection vers le tableau
+
+        // 4. Envoi de l'email de bienvenue VIA NOTIFICATION UNIQUEMENT
+        $user->notify(new WelcomeNotification($password_clair, $request->role));
+
+        // 5. Redirection vers le tableau
         return redirect()->route('users.index')->with('success', 'Employé créé avec succès et email envoyé !');
     }
-
     // Affiche le formulaire de modification avec les rôles
     public function edit($id)
     {

@@ -37,4 +37,8 @@ class WelcomeUserMail extends Mailable
             markdown: 'emails.welcome', // Le template visuel
         );
     }
+    public function build()
+    {
+        return $this->markdown('emails.welcome');
+    }
 }
