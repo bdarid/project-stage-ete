@@ -1,108 +1,190 @@
 <x-app-layout>
+
     <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-white">
-            Nouveau Département
-        </h2>
+
+        <x-erp.page-header
+            title="Nouveau Département"
+            subtitle="Créer un nouveau département et lui attribuer des employés ainsi que des objectifs."
+        />
+
     </x-slot>
 
-    <div class="py-8">
+    <div class="space-y-6">
+
+        <x-erp.alert />
+
         <div class="max-w-5xl mx-auto">
 
-            @if ($errors->any())
-                <div class="bg-red-100 border border-red-300 text-red-700 rounded-lg p-4 mb-6">
-                    <ul class="list-disc ml-6">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            <x-erp.card
+                title="Informations du département"
+                subtitle="Complétez les informations ci-dessous."
+            >
 
-            <div class="bg-white shadow-lg rounded-xl p-8">
+                @if ($errors->any())
 
-                <form action="{{ route('departements.store') }}" method="POST">
-                    @csrf
+                    <div class="mb-6 rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-red-300">
 
-                    {{-- Nom du département --}}
-                    <div class="mb-6">
-                        <label class="font-semibold text-gray-700">
-                            Nom du département
-                        </label>
-                        <input
-                            type="text"
-                            name="nom_departement"
-                            value="{{ old('nom_departement') }}"
-                            class="w-full border border-gray-300 rounded-lg mt-2 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
-                            required>
+                        <ul class="list-disc list-inside space-y-1">
+
+                            @foreach ($errors->all() as $error)
+
+                                <li>{{ $error }}</li>
+
+                            @endforeach
+
+                        </ul>
+
                     </div>
 
-                    {{-- Employés (Checkboxes) --}}
-                    <div class="mb-6">
-                        <label class="font-semibold text-gray-700">
-                            Employés
+                @endif
+
+                <form action="{{ route('departements.store') }}" method="POST" class="space-y-8">
+
+                    @csrf
+
+                    <x-erp.input
+                        label="Nom du département"
+                        name="nom_departement"
+                        :value="old('nom_departement')"
+                        required
+                    />
+                                        {{-- Employés --}}
+
+                    <div>
+
+                        <label class="block text-sm font-semibold text-slate-300 mb-3">
+
+                            Employés du département
+
                         </label>
 
-                        <div class="border border-gray-200 rounded-lg p-4 mt-2 max-h-48 overflow-y-auto bg-gray-50">
+                        <div class="rounded-xl border border-slate-700 bg-slate-900 p-5 max-h-72 overflow-y-auto">
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
                                 @foreach($users as $user)
-                                    <label class="flex items-center gap-3 bg-white p-2.5 rounded-md border border-gray-100 hover:border-gray-300 cursor-pointer transition-colors shadow-sm">
+
+                                    <label class="flex items-center gap-3 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 hover:border-blue-500 p-3 cursor-pointer transition">
+
                                         <input
                                             type="checkbox"
                                             name="users[]"
                                             value="{{ $user->id }}"
-                                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                            class="rounded border-slate-600 bg-slate-900 text-blue-600 focus:ring-blue-500"
                                             {{ is_array(old('users')) && in_array($user->id, old('users')) ? 'checked' : '' }}>
-                                        <span class="text-sm text-gray-700 font-medium">
-                                            {{ $user->name }}
-                                        </span>
-                                    </label>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
 
-                    {{-- Objectifs (Checkboxes) --}}
-                    <div class="mb-6">
-                        <label class="font-semibold text-gray-700">
+                                        <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 font-bold">
+
+                                            {{ strtoupper(substr($user->name,0,1)) }}
+
+                                        </div>
+
+                                        <div>
+
+                                            <p class="text-white font-medium">
+
+                                                {{ $user->name }}
+
+                                            </p>
+
+                                            <p class="text-xs text-slate-400">
+
+                                                Employé
+
+                                            </p>
+
+                                        </div>
+
+                                    </label>
+
+                                @endforeach
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                                        {{-- Objectifs --}}
+
+                    <div>
+
+                        <label class="block text-sm font-semibold text-slate-300 mb-3">
+
                             Objectifs du département
+
                         </label>
 
-                        <div class="border border-gray-200 rounded-lg p-4 mt-2 max-h-48 overflow-y-auto bg-gray-50">
+                        <div class="rounded-xl border border-slate-700 bg-slate-900 p-5 max-h-72 overflow-y-auto">
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
                                 @foreach($objectifs as $objectif)
-                                    <label class="flex items-center gap-3 bg-white p-2.5 rounded-md border border-gray-100 hover:border-gray-300 cursor-pointer transition-colors shadow-sm">
+
+                                    <label class="flex items-center gap-3 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 hover:border-green-500 p-3 cursor-pointer transition">
+
                                         <input
                                             type="checkbox"
                                             name="objectifs[]"
                                             value="{{ $objectif->id }}"
-                                            class="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                                            class="rounded border-slate-600 bg-slate-900 text-green-600 focus:ring-green-500"
                                             {{ is_array(old('objectifs')) && in_array($objectif->id, old('objectifs')) ? 'checked' : '' }}>
-                                        <span class="text-sm text-gray-700 font-medium">
-                                            {{ $objectif->titre_objectif }}
-                                        </span>
-                                    </label>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
 
-                    {{-- Boutons d'action --}}
-                    <div class="flex justify-end gap-4 mt-8">
+                                        <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center text-green-400 font-bold">
+
+                                            {{ strtoupper(substr($objectif->titre_objectif,0,1)) }}
+
+                                        </div>
+
+                                        <div>
+
+                                            <p class="text-white font-medium">
+
+                                                {{ $objectif->titre_objectif }}
+
+                                            </p>
+
+                                            <p class="text-xs text-slate-400">
+
+                                                Objectif
+
+                                            </p>
+
+                                        </div>
+
+                                    </label>
+
+                                @endforeach
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                                        <div class="flex justify-end gap-3 border-t border-slate-700 pt-6">
+
                         <a href="{{ route('departements.index') }}"
-                           class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                           class="px-5 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white transition">
+
                             Annuler
+
                         </a>
+
                         <button
                             type="submit"
-                            class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
-                            Enregistrer
+                            class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold transition">
+
+                            Enregistrer le département
+
                         </button>
+
                     </div>
 
                 </form>
 
-            </div>
+            </x-erp.card>
 
         </div>
+
     </div>
+
 </x-app-layout>

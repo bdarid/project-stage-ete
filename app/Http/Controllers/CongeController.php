@@ -11,23 +11,25 @@ class CongeController extends Controller
 {
     // 1. Afficher la liste des congés
     public function index()
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
-        // Si Admin ou Manager, on charge tous les congés avec les infos de l'utilisateur associé
-        if ($user->hasRole(['Admin', 'Manager'])) {
-            $conges = Conge::with('user')
-                ->orderBy('created_at', 'desc')
-                ->get();
-        } else {
-            // L'employé ne voit que ses propres demandes
-            $conges = Conge::where('users_id', $user->id)
-                ->orderBy('created_at', 'desc')
-                ->get();
-        }
+    if ($user->hasRole(['Admin', 'Manager'])) {
 
-        return view('conge.index', compact('conges'));
+        $conges = Conge::with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+    } else {
+
+        $conges = Conge::where('users_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
     }
+
+    return view('conge.index', compact('conges'));
+}
 
     // 2. Soumettre une demande de congé (Employé)
     public function store(Request $request)

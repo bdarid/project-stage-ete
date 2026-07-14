@@ -1,89 +1,320 @@
 <x-app-layout>
+
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-white leading-tight">
-            {{ __('Pointage Quotidien') }}
-        </h2>
+
+        <x-erp.page-header
+            title="Pointage Quotidien"
+            subtitle="Enregistrez votre présence et consultez votre statut du jour."
+        />
+
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="space-y-6">
 
-            @if (session('success'))
-                <div class="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    {{ session('success') }}
-                </div>
-            @endif
+        <x-erp.alert />
 
-            @if (session('error'))
-                <div class="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                    {{ session('error') }}
-                </div>
-            @endif
+        <div class="max-w-4xl mx-auto">
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100">
-                <div class="p-8 bg-white border-b border-gray-200 text-center">
+            <x-erp.card
+                title="Pointage du jour"
+                subtitle="Votre présence pour aujourd'hui."
+            >
 
-                    <h3 class="text-2xl font-bold text-gray-800 mb-8">
-                        Aujourd'hui : {{ \Carbon\Carbon::today()->translatedFormat('l d F Y') }}
-                    </h3>
+                <div class="text-center mb-10">
 
-                    @if(!$pointageAujourdhui)
-                        <div class="mb-4">
-                            <div class="inline-flex items-center justify-center w-24 h-24 bg-gray-50 border-4 border-gray-100 rounded-full mb-4">
-                                <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </div>
-                            <p class="text-gray-600 mb-8">Vous n'avez pas encore enregistré votre arrivée aujourd'hui.</p>
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-500/10 mb-5">
 
-                            <form action="{{ route('pointage.entree') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg shadow-md transition-all hover:scale-105 text-lg w-full sm:w-auto">
-                                    ▶ Pointer mon Arrivée
-                                </button>
-                            </form>
-                        </div>
+                        <svg class="w-10 h-10 text-blue-400"
+                             fill="none"
+                             stroke="currentColor"
+                             viewBox="0 0 24 24">
 
-                    @elseif($pointageAujourdhui && !$pointageAujourdhui->heure_depart)
-                        <div class="mb-4">
-                            <div class="inline-flex items-center justify-center w-24 h-24 bg-green-50 border-4 border-green-100 rounded-full mb-4 animate-pulse">
-                                <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            </div>
-                            <p class="text-green-700 font-semibold mb-2 text-xl">Arrivée enregistrée à {{ \Carbon\Carbon::parse($pointageAujourdhui->heure_arrive)->format('H:i') }}</p>
-                            <p class="text-gray-600 mb-8">Bonne journée de travail ! N'oubliez pas de pointer votre départ ce soir.</p>
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0"/>
 
-                            <form action="{{ route('pointage.sortie') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-md transition-all hover:scale-105 text-lg w-full sm:w-auto">
-                                    ⏹ Pointer mon Départ
-                                </button>
-                            </form>
-                        </div>
+                        </svg>
 
-                    @else
-                        <div class="mb-4">
-                            <div class="inline-flex items-center justify-center w-24 h-24 bg-blue-50 border-4 border-blue-100 rounded-full mb-4">
-                                <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </div>
-                            <h4 class="text-2xl font-bold text-gray-800 mb-2">Journée terminée !</h4>
-                            <p class="text-gray-500 mb-8">Merci et à demain.</p>
+                    </div>
 
-                            <div class="flex flex-col sm:flex-row justify-center sm:space-x-12 space-y-4 sm:space-y-0 text-gray-700 bg-gray-50 p-6 rounded-lg inline-flex w-full sm:w-auto">
-                                <div>
-                                    <span class="block text-xs uppercase tracking-wider text-gray-500 mb-1">Heure d'arrivée</span>
-                                    <span class="font-bold text-xl">{{ \Carbon\Carbon::parse($pointageAujourdhui->heure_arrive)->format('H:i') }}</span>
-                                </div>
-                                <div class="hidden sm:block w-px bg-gray-300"></div>
-                                <div>
-                                    <span class="block text-xs uppercase tracking-wider text-gray-500 mb-1">Heure de départ</span>
-                                    <span class="font-bold text-xl">{{ \Carbon\Carbon::parse($pointageAujourdhui->heure_depart)->format('H:i') }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
+                    <h2 class="text-3xl font-bold text-white">
+
+                        {{ \Carbon\Carbon::today()->translatedFormat('l d F Y') }}
+
+                    </h2>
+
+                    <p class="mt-2 text-slate-400">
+
+                        Gérez votre pointage quotidien.
+
+                    </p>
 
                 </div>
-            </div>f
+
+                @if(!$pointageAujourdhui)
+                <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-10">
+
+    <div class="flex flex-col items-center">
+
+        <div class="w-24 h-24 rounded-full bg-slate-800 flex items-center justify-center mb-6">
+
+            <svg class="w-12 h-12 text-slate-400"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0"/>
+
+            </svg>
+
         </div>
+
+        <h3 class="text-2xl font-bold text-white mb-2">
+            Vous n'avez pas encore pointé.
+        </h3>
+
+        <p class="text-slate-400 text-center max-w-lg mb-8">
+            Cliquez sur le bouton ci-dessous pour enregistrer votre heure
+            d'arrivée et commencer votre journée de travail.
+        </p>
+
+        <form action="{{ route('pointage.entree') }}" method="POST">
+
+            @csrf
+
+            <button
+                type="submit"
+                class="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-green-600 hover:bg-green-700 text-white font-bold text-lg shadow-lg transition duration-200 hover:scale-105">
+
+                <svg class="w-6 h-6"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 13l4 4L19 7"/>
+
+                </svg>
+
+                Pointer mon arrivée
+
+            </button>
+
+        </form>
+
     </div>
+
+</div>
+
+@elseif($pointageAujourdhui && !$pointageAujourdhui->heure_depart)
+<div class="rounded-2xl border border-green-500/20 bg-green-500/10 p-10">
+
+    <div class="flex flex-col items-center">
+
+        <div class="w-24 h-24 rounded-full bg-green-500/20 flex items-center justify-center mb-6">
+
+            <svg class="w-12 h-12 text-green-400"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"/>
+
+            </svg>
+
+        </div>
+
+        <h3 class="text-3xl font-bold text-green-400 mb-3">
+
+            Arrivée enregistrée
+
+        </h3>
+
+        <p class="text-slate-300 text-lg">
+
+            Heure d'arrivée :
+
+            <span class="font-bold text-white">
+
+                {{ \Carbon\Carbon::parse($pointageAujourdhui->heure_arrive)->format('H:i') }}
+
+            </span>
+
+        </p>
+
+        <p class="text-slate-400 mt-4 text-center max-w-xl">
+
+            Votre arrivée a bien été enregistrée.
+            Lorsque votre journée est terminée, cliquez sur le bouton ci-dessous
+            pour enregistrer votre heure de départ.
+
+        </p>
+
+        <form
+            action="{{ route('pointage.sortie') }}"
+            method="POST"
+            class="mt-10">
+
+            @csrf
+
+            <button
+                type="submit"
+                class="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-lg shadow-lg transition duration-200 hover:scale-105">
+
+                <svg class="w-6 h-6"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M18 12H6"/>
+
+                </svg>
+
+                Pointer mon départ
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+@else
+<div class="rounded-2xl border border-blue-500/20 bg-blue-500/10 p-10">
+
+    <div class="flex flex-col items-center">
+
+        <div class="w-24 h-24 rounded-full bg-blue-500/20 flex items-center justify-center mb-6">
+
+            <svg class="w-12 h-12 text-blue-400"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"/>
+
+            </svg>
+
+        </div>
+
+        <h3 class="text-3xl font-bold text-blue-400 mb-3">
+
+            Journée terminée
+
+        </h3>
+
+        <p class="text-slate-300 mb-10">
+
+            Votre présence a été enregistrée avec succès.
+
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+
+            {{-- Arrivée --}}
+            <div class="rounded-xl bg-slate-900/50 border border-slate-700 p-6 text-center">
+
+                <p class="text-slate-400 text-sm uppercase tracking-wider mb-2">
+                    Heure d'arrivée
+                </p>
+
+                <p class="text-3xl font-bold text-green-400">
+
+                    {{ \Carbon\Carbon::parse($pointageAujourdhui->heure_arrive)->format('H:i') }}
+
+                </p>
+
+            </div>
+
+            {{-- Départ --}}
+            <div class="rounded-xl bg-slate-900/50 border border-slate-700 p-6 text-center">
+
+                <p class="text-slate-400 text-sm uppercase tracking-wider mb-2">
+                    Heure de départ
+                </p>
+
+                <p class="text-3xl font-bold text-red-400">
+
+                    {{ \Carbon\Carbon::parse($pointageAujourdhui->heure_depart)->format('H:i') }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+        @php
+            $arrivee = \Carbon\Carbon::parse($pointageAujourdhui->heure_arrive);
+            $depart = \Carbon\Carbon::parse($pointageAujourdhui->heure_depart);
+            $duree = $arrivee->diff($depart);
+        @endphp
+
+        <div class="mt-8 rounded-xl bg-slate-900 border border-slate-700 px-8 py-6 w-full">
+
+            <div class="flex justify-between items-center">
+
+                <span class="text-slate-400">
+                    Temps travaillé aujourd'hui
+                </span>
+
+                <span class="text-2xl font-bold text-blue-400">
+
+                    {{ $duree->h }}h {{ $duree->i }}min
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="mt-8">
+
+            <span class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-green-500/10 text-green-400 font-semibold">
+
+                <svg class="w-5 h-5"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 13l4 4L19 7"/>
+
+                </svg>
+
+                Merci pour votre journée de travail !
+
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+@endif
+
+            </x-erp.card>
+
+        </div>
+
+    </div>
+
 </x-app-layout>

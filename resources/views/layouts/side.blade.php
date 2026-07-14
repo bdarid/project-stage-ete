@@ -15,10 +15,67 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
             Gestion des Employés
         </a>
-        <a href="{{ route('pointage.adminindex') }}" class="flex items-center gap-3 px-4 py-2.5 text-slate-400 hover:bg-slate-700/50 hover:text-slate-200 rounded-xl font-medium transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            Supervision Pointages
+        <details class="group">
+
+    <summary class="flex items-center justify-between px-4 py-2.5 text-slate-400 hover:bg-slate-700/50 hover:text-slate-200 rounded-xl font-medium cursor-pointer list-none">
+
+        <div class="flex items-center gap-3">
+
+            <svg class="w-5 h-5"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0"/>
+            </svg>
+
+            <span>Pointages</span>
+
+        </div>
+
+        <svg class="w-4 h-4 transition-transform group-open:rotate-180"
+             fill="none"
+             stroke="currentColor"
+             viewBox="0 0 24 24">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"/>
+        </svg>
+
+    </summary>
+
+    <div class="mt-2 ml-8 space-y-2">
+
+        <a href="{{ route('pointage.index') }}"
+           class="flex items-center gap-3 px-4 py-2 rounded-lg text-slate-400 hover:bg-slate-700/50 hover:text-white">
+
+            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+
+            Effectuer un Pointage
+
         </a>
+
+        <a href="{{ route('pointage.adminindex') }}"
+           class="flex items-center gap-3 px-4 py-2 rounded-lg text-slate-400 hover:bg-slate-700/50 hover:text-white">
+
+            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+
+            Supervision des Pointages
+
+        </a>
+
+    </div>
+
+</details>
+        <a href="{{ route('objectifs.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-slate-400 hover:bg-slate-700/50 hover:text-slate-200 rounded-xl font-medium transition-colors">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    Objectifs
+</a>
         <a href="{{ route('conges') }}" class="flex items-center gap-3 px-4 py-2.5 text-slate-400 hover:bg-slate-700/50 hover:text-slate-200 rounded-xl font-medium transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
             Validation des Congés

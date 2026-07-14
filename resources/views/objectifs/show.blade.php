@@ -1,166 +1,119 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-2xl text-white">
-                Détails de l'Objectif
-            </h2>
 
-            <div class="flex gap-2">
+    <x-slot name="header">
+        <x-erp.page-header
+            title="Détails de l'objectif"
+            subtitle="Vue détaillée : {{ $objectif->titre_objectif }}"
+        >
+            <div class="flex gap-3">
                 <a href="{{ route('objectifs.edit', $objectif->id) }}"
-                   class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg">
+                    class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-medium transition shadow-sm">
                     Modifier
                 </a>
-
                 <a href="{{ route('objectifs.index') }}"
-                   class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
+                    class="px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-medium transition shadow-sm">
                     Retour
                 </a>
             </div>
-        </div>
+        </x-erp.page-header>
     </x-slot>
 
-    <div class="py-8 text-black">
-        <div class="max-w-6xl mx-auto">
+    <div class="space-y-6 pb-12">
 
-            <div class="bg-white shadow rounded-xl p-8">
+        <div class="max-w-5xl mx-auto">
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <x-erp.card
+                title="Informations complètes"
+                subtitle="Vision globale des paramètres et de la progression."
+            >
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-2">
+
+                    {{-- Titre --}}
                     <div class="md:col-span-2">
-                        <h3 class="text-2xl font-bold text-gray-800">
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Titre</label>
+                        <h3 class="text-2xl font-bold text-white">
                             {{ $objectif->titre_objectif }}
                         </h3>
                     </div>
 
+                    {{-- Description --}}
                     <div class="md:col-span-2">
-                        <label class="font-semibold text-gray-600">
-                            Description
-                        </label>
-
-                        <div class="mt-2 p-4 bg-gray-50 rounded-lg border">
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Description</label>
+                        <div class="p-4 bg-slate-950/50 rounded-xl border border-slate-700/50 text-slate-300">
                             {{ $objectif->description_objectif }}
                         </div>
                     </div>
 
+                    {{-- Dates --}}
                     <div>
-                        <label class="font-semibold text-gray-600">
-                            Date de début
-                        </label>
-
-                        <div class="mt-2">
-                            {{ $objectif->date_debut_obj ?? 'Non définie' }}
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Date de début</label>
+                        <div class="text-lg text-slate-200 font-medium">
+                            {{ $objectif->date_debut_obj ? \Carbon\Carbon::parse($objectif->date_debut_obj)->format('d/m/Y') : 'Non définie' }}
                         </div>
                     </div>
 
                     <div>
-                        <label class="font-semibold text-gray-600">
-                            Date de fin
-                        </label>
-
-                        <div class="mt-2">
-                            {{ $objectif->date_fin_obj ?? 'Non définie' }}
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Date de fin</label>
+                        <div class="text-lg text-slate-200 font-medium">
+                            {{ $objectif->date_fin_obj ? \Carbon\Carbon::parse($objectif->date_fin_obj)->format('d/m/Y') : 'Non définie' }}
                         </div>
                     </div>
 
+                    {{-- Progression --}}
                     <div class="md:col-span-2">
-
-                        <label class="font-semibold text-gray-600">
-                            Progression
-                        </label>
-
-                        <div class="mt-3">
-
-                            <div class="w-full bg-gray-200 rounded-full h-6">
-
-                                <div
-                                    class="bg-blue-600 h-6 rounded-full text-white text-center text-sm leading-6"
-                                    style="width: {{ $objectif->etat_avancement_objectif }}%;">
-
-                                    {{ $objectif->etat_avancement_objectif }}%
-
-                                </div>
-
+                        <div class="flex justify-between items-end mb-2">
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Progression</label>
+                            <span class="text-blue-400 font-bold">{{ $objectif->etat_avancement_objectif }}%</span>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-4 overflow-hidden shadow-inner">
+                            <div class="bg-blue-600 h-4 rounded-full transition-all duration-500"
+                                style="width: {{ $objectif->etat_avancement_objectif }}%;">
                             </div>
-
                         </div>
-
                     </div>
 
+                    {{-- Assignations --}}
                     <div>
-
-                        <label class="font-semibold text-gray-600">
-                            Employés assignés
-                        </label>
-
-                        <div class="mt-3">
-
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Employés assignés</label>
+                        <div class="flex flex-wrap gap-2">
                             @forelse($objectif->users as $user)
-
-                                <span class="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm mr-2 mb-2">
-
+                                <span class="inline-flex items-center px-3 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 text-sm">
                                     {{ $user->name_users }}
-
                                 </span>
-
                             @empty
-
-                                <span class="text-gray-400">
-                                    Aucun employé affecté.
-                                </span>
-
+                                <span class="text-slate-600 italic text-sm">Aucun employé affecté.</span>
                             @endforelse
-
                         </div>
-
                     </div>
 
                     <div>
-
-                        <label class="font-semibold text-gray-600">
-                            Départements concernés
-                        </label>
-
-                        <div class="mt-3">
-
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Départements concernés</label>
+                        <div class="flex flex-wrap gap-2">
                             @forelse($objectif->departement as $departement)
-
-                                <span class="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm mr-2 mb-2">
-
+                                <span class="inline-flex items-center px-3 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 text-sm">
                                     {{ $departement->nom_departement }}
-
                                 </span>
-
                             @empty
-
-                                <span class="text-gray-400">
-                                    Aucun département.
-                                </span>
-
+                                <span class="text-slate-600 italic text-sm">Aucun département.</span>
                             @endforelse
-
                         </div>
-
                     </div>
 
+                    {{-- JSON --}}
                     @if(!empty($objectif->file_json))
-
                         <div class="md:col-span-2">
-
-                            <label class="font-semibold text-gray-600">
-                                Données JSON
-                            </label>
-
-                            <pre class="mt-3 bg-gray-900 text-green-400 rounded-lg p-5 overflow-x-auto text-sm">{{ json_encode($objectif->file_json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
-
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Données configuration (JSON)</label>
+                            <pre class="bg-slate-950 p-4 rounded-xl border border-slate-700 text-green-400 font-mono text-sm overflow-x-auto shadow-inner">{{ json_encode($objectif->file_json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
                         </div>
-
                     @endif
 
                 </div>
 
-            </div>
+            </x-erp.card>
 
         </div>
+
     </div>
 
 </x-app-layout>

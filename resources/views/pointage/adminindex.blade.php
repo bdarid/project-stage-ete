@@ -1,88 +1,226 @@
 <x-app-layout>
+
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-white leading-tight">
-            {{ __('Supervision des Pointages') }}
-        </h2>
+
+        <x-erp.page-header
+            title="Supervision des Pointages"
+            subtitle="Consultez l'historique des présences de tous les employés."
+        />
+
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 border-b border-gray-100 flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-bold">Historique Global des Présences</h3>
-                </div>
+    <div class="space-y-6">
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">Date</th>
-                                <th scope="col" class="px-6 py-3">Employé</th>
-                                <th scope="col" class="px-6 py-3">Manager Direct</th>
-                                <th scope="col" class="px-6 py-3">Heure Arrivée</th>
-                                <th scope="col" class="px-6 py-3">Heure Départ</th>
-                                <th scope="col" class="px-6 py-3">Statut Congé (Jour même)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($pointages as $pointage)
-                                <tr class="bg-white border-b hover:bg-gray-50 transition duration-150">
-                                    <td class="px-6 py-4 font-medium text-gray-900">
-                                        {{ \Carbon\Carbon::parse($pointage->date)->format('d/m/Y') }}
-                                    </td>
+        <x-erp.alert />
 
-                                    <td class="px-6 py-4">
-                                        {{ $pointage->users->name ?? 'Utilisateur introuvable' }}
-                                    </td>
+        <x-erp.card
+            title="Historique des Présences"
+            subtitle="Tous les pointages enregistrés."
+            :count="$pointages->total()"
+            label="Pointages"
+        >
 
-                                    <td class="px-6 py-4 text-gray-600">
-                                        {{ $pointage->users->manager->name ?? 'Aucun manager' }}
-                                    </td>
+            <div class="overflow-x-auto">
 
-                                    <td class="px-6 py-4">
-                                        <span class="px-2.5 py-1 bg-green-100 text-green-800 rounded-full font-semibold text-xs">
-                                            {{ $pointage->heure_arrive ? \Carbon\Carbon::parse($pointage->heure_arrive)->format('H:i') : '--:--' }}
-                                        </span>
-                                    </td>
+                <table class="min-w-full">
 
-                                    <td class="px-6 py-4">
-                                        @if($pointage->heure_depart)
-                                            <span class="px-2.5 py-1 bg-blue-100 text-blue-800 rounded-full font-semibold text-xs">
-                                                {{ \Carbon\Carbon::parse($pointage->heure_depart)->format('H:i') }}
-                                            </span>
-                                        @else
-                                            <span class="px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full font-semibold text-xs">
-                                                En cours
-                                            </span>
-                                        @endif
-                                    </td>
+                    <thead class="bg-slate-900/40 border-b border-slate-700">
 
-                                    <td class="px-6 py-4">
-                                        @if($pointage->users->conges->isNotEmpty())
-                                            <span class="px-2.5 py-1 bg-purple-100 text-purple-800 border border-purple-200 rounded-md font-semibold text-xs flex w-fit items-center gap-1">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                                En congé ({{ $pointage->users->conges->first()->type ?? 'Absence' }})
-                                            </span>
-                                        @else
-                                            <span class="text-gray-400 text-xs italic">Présent / Non applicable</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="px-6 py-8 text-center text-gray-500 bg-gray-50">
-                                        Aucun pointage enregistré pour le moment.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                        <tr class="text-slate-400 uppercase text-xs tracking-wider">
 
-                <div class="p-4 border-t border-gray-100">
-                    {{ $pointages->links() }}
-                </div>
+                            <th class="px-6 py-4 text-left">
+                                Date
+                            </th>
+
+                            <th class="px-6 py-4 text-left">
+                                Employé
+                            </th>
+
+                            <th class="px-6 py-4 text-left">
+                                Manager
+                            </th>
+
+                            <th class="px-6 py-4 text-left">
+                                Arrivée
+                            </th>
+
+                            <th class="px-6 py-4 text-left">
+                                Départ
+                            </th>
+
+                            <th class="px-6 py-4 text-left">
+                                Statut
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="divide-y divide-slate-700">
+
+                        @forelse($pointages as $pointage)
+
+                        
+
+<tr class="hover:bg-slate-700/30 transition">
+
+    {{-- Date --}}
+    <td class="px-6 py-5 text-slate-300">
+        {{ \Carbon\Carbon::parse($pointage->date)->format('d/m/Y') }}
+    </td>
+
+    {{-- Employé --}}
+    <td class="px-6 py-5">
+
+        <div class="flex items-center gap-4">
+
+            <div class="w-11 h-11 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 font-bold">
+                {{ strtoupper(substr($pointage->users->name ?? '?',0,1)) }}
             </div>
+
+            <div>
+
+                <p class="font-semibold text-white">
+                    {{ $pointage->users->name ?? 'Utilisateur introuvable' }}
+                </p>
+
+                <p class="text-xs text-slate-500">
+                    ID #{{ $pointage->users->id ?? '-' }}
+                </p>
+
+            </div>
+
         </div>
+
+    </td>
+
+    {{-- Manager --}}
+    <td class="px-6 py-5 text-slate-300">
+
+        {{ $pointage->users->manager->name ?? 'Aucun manager' }}
+
+    </td>
+
+    {{-- Arrivée --}}
+    <td class="px-6 py-5">
+
+        @if($pointage->heure_arrive)
+
+            <span class="inline-flex px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">
+                {{ \Carbon\Carbon::parse($pointage->heure_arrive)->format('H:i') }}
+            </span>
+
+        @else
+
+            <span class="inline-flex px-3 py-1 rounded-full bg-slate-700 text-slate-400 text-xs">
+                --:--
+            </span>
+
+        @endif
+
+    </td>
+
+    {{-- Départ --}}
+    <td class="px-6 py-5">
+
+        @if($pointage->heure_depart)
+
+            <span class="inline-flex px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold">
+                {{ \Carbon\Carbon::parse($pointage->heure_depart)->format('H:i') }}
+            </span>
+
+        @else
+
+            <span class="inline-flex px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-400 text-xs font-semibold">
+                En cours
+            </span>
+
+        @endif
+
+    </td>
+
+    {{-- Congé --}}
+    <td class="px-6 py-5">
+
+        @if($pointage->users && $pointage->users->conges->isNotEmpty())
+
+            <span class="inline-flex px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-semibold">
+                En congé
+            </span>
+
+        @else
+
+            <span class="inline-flex px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">
+                Présent
+            </span>
+
+        @endif
+
+    </td>
+
+</tr>
+
+@empty
+
+<tr>
+
+    <td colspan="6" class="py-14 text-center">
+
+        <div class="text-slate-500">
+
+            <svg class="mx-auto w-12 h-12 mb-3 opacity-50"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12h6m-6 4h6M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z"/>
+
+            </svg>
+
+            <p class="text-lg">
+                Aucun pointage enregistré.
+            </p>
+
+        </div>
+
+    </td>
+
+</tr>
+
+@endforelse
+
+</tbody>
+</table>
+
+</div>
+
+@if(method_exists($pointages,'links'))
+
+<div class="px-6 py-5 border-t border-slate-700 flex items-center justify-between">
+
+    <div class="text-sm text-slate-400">
+        Affichage de
+        <span class="font-semibold text-white">{{ $pointages->firstItem() }}</span>
+        à
+        <span class="font-semibold text-white">{{ $pointages->lastItem() }}</span>
+        sur
+        <span class="font-semibold text-white">{{ $pointages->total() }}</span>
+        pointages
     </div>
+
+    <div>
+        {{ $pointages->links() }}
+    </div>
+
+</div>
+
+@endif
+
+</x-erp.card>
+
+</div>
+
 </x-app-layout>

@@ -12,7 +12,9 @@ class UserController extends Controller
     public function index()
     {
         // Récupère tous les utilisateurs triés du plus récent au plus ancien
-        $users = Users::orderBy('created_at', 'desc')->get();
+        $users = Users::latest()
+    ->paginate(10)
+    ->withQueryString();
         return view('users.index', compact('users'));
     }
 

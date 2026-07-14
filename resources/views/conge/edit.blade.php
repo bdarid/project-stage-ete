@@ -1,148 +1,157 @@
 <x-app-layout>
+
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-white leading-tight">
-            {{ __('Modifier une demande de congé') }}
-        </h2>
+        <x-erp.page-header
+            title="Modifier une demande de congé"
+            subtitle="Modifiez les informations de cette demande ou validez-la."
+        />
     </x-slot>
 
-    <div class="py-12 text-black">
+    <div class="space-y-6">
 
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+        <x-erp.alert />
 
-            <div class="bg-white shadow-sm rounded-lg p-6">
+        <div class="max-w-4xl mx-auto">
+
+            <x-erp.card
+                title="Informations de la demande"
+                subtitle="Mettez à jour les informations du congé."
+            >
 
                 @if ($errors->any())
-                    <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-
-                        <ul class="list-disc ml-5">
-
+                    <div class="mb-6 rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-red-300">
+                        <ul class="list-disc list-inside space-y-1">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
-
                         </ul>
-
                     </div>
                 @endif
 
-                <form action="{{ route('conges.update',$conge->id) }}" method="POST">
+                <form action="{{ route('conges.update', $conge->id) }}" method="POST" class="space-y-6">
 
                     @csrf
                     @method('PUT')
 
-                    <div class="mb-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                        <label class="block text-sm font-medium text-gray-700">
-                            Date début
-                        </label>
-
-                        <input
-                            type="date"
+                        <x-erp.input
+                            label="Date début"
                             name="date_debut"
-                            value="{{ old('date_debut',$conge->date_debut) }}"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                            required>
-
-                    </div>
-
-                    <div class="mb-4">
-
-                        <label class="block text-sm font-medium text-gray-700">
-                            Date fin
-                        </label>
-
-                        <input
                             type="date"
+                            :value="old('date_debut', $conge->date_debut)"
+                            required
+                        />
+
+                        <x-erp.input
+                            label="Date fin"
                             name="date_fin"
-                            value="{{ old('date_fin',$conge->date_fin) }}"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                            required>
+                            type="date"
+                            :value="old('date_fin', $conge->date_fin)"
+                            required
+                        />
 
                     </div>
 
-                    <div class="mb-6">
+                    <x-erp.select
+                        name="type_conge"
+                        label="Type de congé">
 
-                        <label class="block text-sm font-medium text-gray-700">
-                            Type de congé
-                        </label>
+                        <option value="annuel"
+                            @selected(old('type_conge', $conge->type_conge) == 'annuel')>
+                            Annuel
+                        </option>
 
-                        <select
-                            name="type_conge"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <option value="maladie"
+                            @selected(old('type_conge', $conge->type_conge) == 'maladie')>
+                            Maladie
+                        </option>
 
-                            <option value="annuel"
-                                {{ $conge->type_conge=='annuel'?'selected':'' }}>
-                                Annuel
-                            </option>
+                        <option value="jours_ferie"
+                            @selected(old('type_conge', $conge->type_conge) == 'jours_ferie')>
+                            Jour férié
+                        </option>
 
-                            <option value="maladie"
-                                {{ $conge->type_conge=='maladie'?'selected':'' }}>
-                                Maladie
-                            </option>
+                        <option value="conge_de_maternite"
+                            @selected(old('type_conge', $conge->type_conge) == 'conge_de_maternite')>
+                            Congé maternité
+                        </option>
 
-                            <option value="jours_ferie"
-                                {{ $conge->type_conge=='jours_ferie'?'selected':'' }}>
-                                Jour férié
-                            </option>
+                    </x-erp.select>
 
-                            <option value="conge_de_maternite"
-                                {{ $conge->type_conge=='conge_de_maternite'?'selected':'' }}>
-                                Congé maternité
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                    <div class="flex justify-end">
+                    <div class="flex justify-end gap-3 border-t border-slate-700 pt-6">
 
                         <a href="{{ route('conges') }}"
-                           class="px-4 py-2 bg-gray-500 text-white rounded mr-2">
+                           class="px-5 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-medium transition">
                             Annuler
                         </a>
 
                         <button
-                            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                            Modifier
+                            type="submit"
+                            class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold transition">
+                            Enregistrer
                         </button>
 
                     </div>
 
                 </form>
-                {{-- SECTION ADMIN : DÉCISION POUR LE CONGÉ --}}
-@if(auth()->user()->hasRole(['Admin','Manager']) && $conge->statut == 'en attente')
-    <div class="mt-8 pt-6 border-t border-gray-200">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">
-            Décision de la direction (Admin/Manager)
-        </h3>
 
-        <div class="flex gap-4">
-            {{-- Formulaire pour ACCEPTER --}}
-            <form action="{{ route('conges.valider', $conge->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="reponse" value="accepte">
-                <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir ACCEPTER cette demande ?')"
-                        class="px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 shadow-sm">
-                    ✓ Accepter la demande
-                </button>
-            </form>
+            </x-erp.card>
 
-            {{-- Formulaire pour REFUSER --}}
-            <form action="{{ route('conges.valider', $conge->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="reponse" value="refuse">
-                <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir REFUSER cette demande ?')"
-                        class="px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 shadow-sm">
-                    ✗ Refuser la demande
-                </button>
-            </form>
-        </div>
-    </div>
-@endif
+            @if(auth()->user()->hasRole(['Admin','Manager']) && $conge->statut == 'en attente')
 
-            </div>
+                <div class="mt-6">
+
+                    <x-erp.card
+                        title="Décision de la direction"
+                        subtitle="Acceptez ou refusez cette demande de congé."
+                    >
+
+                        <div class="flex flex-wrap gap-4">
+
+                            <form action="{{ route('conges.valider', $conge->id) }}" method="POST">
+
+                                @csrf
+                                @method('PUT')
+
+                                <input type="hidden" name="reponse" value="accepte">
+
+                                <button
+                                    type="submit"
+                                    onclick="return confirm('Êtes-vous sûr de vouloir accepter cette demande ?')"
+                                    class="px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold transition">
+
+                                    ✓ Accepter
+
+                                </button>
+
+                            </form>
+
+                            <form action="{{ route('conges.valider', $conge->id) }}" method="POST">
+
+                                @csrf
+                                @method('PUT')
+
+                                <input type="hidden" name="reponse" value="refuse">
+
+                                <button
+                                    type="submit"
+                                    onclick="return confirm('Êtes-vous sûr de vouloir refuser cette demande ?')"
+                                    class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold transition">
+
+                                    ✕ Refuser
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </x-erp.card>
+
+                </div>
+
+            @endif
 
         </div>
 

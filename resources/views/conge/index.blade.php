@@ -1,183 +1,365 @@
 <x-app-layout>
+    
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-white leading-tight">
-            {{ __('Gestion des Congés') }}
-        </h2>
+        <x-erp.page-header
+            title="Gestion des Congés"
+            subtitle="Consultez et gérez toutes les demandes de congé."
+        >
+
+            <a href="{{ route('conges.create') }}"
+               class="inline-flex items-center gap-2 px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold text-white transition">
+
+                <svg class="w-5 h-5"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 4v16m8-8H4"/>
+                </svg>
+
+                Nouvelle demande
+
+            </a>
+
+        </x-erp.page-header>
+        
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+    <div class="space-y-6">
 
-                @if(session('success'))
-                    <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-                        {{ session('success') }}
-                    </div>
-                @endif
+        <x-erp.alert/>
 
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-medium text-gray-900">
-                        Liste des demandes de congé
-                    </h3>
+        <x-erp.card
+            title="Demandes de congé"
+            subtitle="Toutes les demandes enregistrées."
+            :count="$conges->total()"
+            label="Demandes"
+        >
+        <a href="{{ route('conges.create') }}"
+   class="inline-flex items-center gap-2 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition">
 
-                    <a href="{{ route('conges.create') }}"
-                       class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
-                        + Nouvelle demande
-                    </a>
-                </div>
+    <svg class="w-5 h-5"
+         fill="none"
+         stroke="currentColor"
+         viewBox="0 0 24 24">
+        <path stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"/>
+    </svg>
 
-                <div class="overflow-x-auto border border-gray-200 sm:rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200">
+    Nouvelle demande de congé
 
-                        <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                Employé
-                            </th>
+</a>
+            <div class="overflow-x-auto">
 
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                Type
-                            </th>
+                <table class="min-w-full">
 
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                Début
-                            </th>
+                    <thead class="bg-slate-900/40 border-b border-slate-700">
 
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                Fin
-                            </th>
+                        <tr class="text-slate-400 uppercase text-xs tracking-wider">
 
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                Durée
-                            </th>
+                            <th class="px-6 py-4 text-left">#</th>
+                            <th class="px-6 py-4 text-left">Employé</th>
+                            <th class="px-6 py-4 text-left">Type</th>
+                            <th class="px-6 py-4 text-left">Début</th>
+                            <th class="px-6 py-4 text-left">Fin</th>
+                            <th class="px-6 py-4 text-left">Durée</th>
+                            <th class="px-6 py-4 text-left">Solde</th>
+                            <th class="px-6 py-4 text-left">Statut</th>
+                            <th class="px-6 py-4 text-left">Réponse</th>
+                            <th class="px-6 py-4 text-right">Actions</th>
 
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                Solde
-                            </th>
-
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                Statut
-                            </th>
-
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                Réponse
-                            </th>
-
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                                Actions
-                            </th>
                         </tr>
-                        </thead>
 
-                        <tbody class="bg-white divide-y divide-gray-200">
+                    </thead>
 
-                        @forelse($conges as $conge)
+                    <tbody class="divide-y divide-slate-700">
 
-                            <tr>
+                    @forelse($conges as $conge)
 
-                                <td class="px-6 py-4 text-black">
-                                    {{ $conge->user->name_users ?? '-' }}
-                                </td>
+                        <tr class="hover:bg-slate-700/30 transition">
 
-                                <td class="px-6 py-4 text-black">
-                                    {{ ucfirst(str_replace('_',' ',$conge->type_conge)) }}
-                                </td>
+                            <td class="px-6 py-5 text-slate-500">
+                                {{ $conges->firstItem() + $loop->index }}
+                            </td>
 
-                                <td class="px-6 py-4 text-black">
-                                    {{ $conge->date_debut }}
-                                </td>
+                            <td class="px-6 py-5">
 
-                                <td class="px-6 py-4 text-black">
-                                    {{ $conge->date_fin }}
-                                </td>
+                                <div class="flex items-center gap-4">
 
-                                <td class="px-6 py-4 text-black">
-                                    {{ $conge->duree }} jour(s)
-                                </td>
+                                    <div class="w-11 h-11 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 font-bold">
 
-                                <td class="px-6 py-4 text-black">
-                                    {{ $conge->solde }} jour(s)
-                                </td>
+                                        {{ strtoupper(substr($conge->user->name_users ?? '-',0,1)) }}
 
-                                <td class="px-6 py-4 text-black">
+                                    </div>
 
-                                    @if($conge->statut=="en attente")
-                                        <span class="px-2 py-1 rounded bg-yellow-100 text-yellow-700">
-                                            En attente
-                                        </span>
+                                    <div>
 
-                                    @elseif($conge->statut=="en cours")
+                                        <p class="font-semibold text-white">
 
-                                        <span class="px-2 py-1 rounded bg-green-100 text-green-700">
-                                            En cours
-                                        </span>
+                                            {{ $conge->user->name_users ?? '-' }}
+
+                                        </p>
+
+                                        <p class="text-xs text-slate-500">
+
+                                            Demande #{{ $conge->id }}
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td class="px-6 py-5">
+                                                            @if($conge->type_conge == 'annuel')
+
+                                    <span class="inline-flex px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold">
+                                        Annuel
+                                    </span>
+
+                                @elseif($conge->type_conge == 'maladie')
+
+                                    <span class="inline-flex px-3 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-semibold">
+                                        Maladie
+                                    </span>
+
+                                @elseif($conge->type_conge == 'jours_ferie')
+
+                                    <span class="inline-flex px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-400 text-xs font-semibold">
+                                        Jour férié
+                                    </span>
+
+                                @else
+
+                                    <span class="inline-flex px-3 py-1 rounded-full bg-pink-500/10 text-pink-400 text-xs font-semibold">
+                                        Congé maternité
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                            {{-- Date début --}}
+                            <td class="px-6 py-5 text-slate-300">
+                                {{ \Carbon\Carbon::parse($conge->date_debut)->format('d/m/Y') }}
+                            </td>
+
+                            {{-- Date fin --}}
+                            <td class="px-6 py-5 text-slate-300">
+                                {{ \Carbon\Carbon::parse($conge->date_fin)->format('d/m/Y') }}
+                            </td>
+
+                            {{-- Durée --}}
+                            <td class="px-6 py-5">
+
+                                <span class="font-semibold text-white">
+                                    {{ $conge->duree }}
+                                </span>
+
+                                <span class="text-slate-500 text-sm">
+                                    jour(s)
+                                </span>
+
+                            </td>
+
+                            {{-- Solde --}}
+                            <td class="px-6 py-5">
+
+                                <span class="font-semibold text-white">
+                                    {{ $conge->solde }}
+                                </span>
+
+                                <span class="text-slate-500 text-sm">
+                                    jour(s)
+                                </span>
+
+                            </td>
+
+                            {{-- Statut --}}
+                            <td class="px-6 py-5">
+
+                                @if($conge->statut == 'en attente')
+
+                                    <span class="inline-flex px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-400 text-xs font-semibold">
+                                        En attente
+                                    </span>
+
+                                @elseif($conge->statut == 'en cours')
+
+                                    <span class="inline-flex px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">
+                                        En cours
+                                    </span>
+
+                                @else
+
+                                    <span class="inline-flex px-3 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-semibold">
+                                        Hors congé
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                            {{-- Réponse --}}
+                            <td class="px-6 py-5">
+
+                                @if($conge->reponse == 'accepte')
+
+                                    <span class="inline-flex px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-semibold">
+                                        Accepté
+                                    </span>
+
+                                @elseif($conge->reponse == 'refuse')
+
+                                    <span class="inline-flex px-3 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-semibold">
+                                        Refusé
+                                    </span>
+
+                                @else
+
+                                    <span class="text-slate-500">
+                                        —
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                            {{-- Actions --}}
+                            <td class="px-6 py-5">
+
+                                <div class="flex justify-end gap-2">
+                                                                    @if($conge->reponse != 'accepte')
+
+                                        <a href="{{ route('conges.edit', $conge->id) }}"
+                                           class="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition">
+
+                                            Modifier
+
+                                        </a>
+
+                                        <form action="{{ route('conges.destroy', $conge->id) }}"
+                                              method="POST"
+                                              onsubmit="return confirm('Supprimer cette demande ?')">
+
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button
+                                                class="px-3 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition">
+
+                                                Supprimer
+
+                                            </button>
+
+                                        </form>
 
                                     @else
 
-                                        <span class="px-2 py-1 rounded bg-red-100 text-red-700">
-                                            Hors congé
+                                        <span class="inline-flex items-center px-3 py-2 rounded-lg bg-green-500/10 text-green-400 text-sm font-semibold">
+
+                                            ✓ Validée
+
                                         </span>
 
                                     @endif
 
-                                </td>
+                                </div>
 
-                                <td class="px-6 py-4 text-black">
+                            </td>
 
-                                    @if($conge->reponse)
+                        </tr>
 
-                                        {{ ucfirst($conge->reponse) }}
+                    @empty
 
-                                    @else
+                        <tr>
 
-                                        -
+                            <td colspan="10" class="py-16 text-center">
 
-                                    @endif
+                                <div class="text-slate-500">
 
-                                </td>
+                                    <svg
+                                        class="mx-auto w-14 h-14 mb-4 opacity-40"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24">
 
-                                <td class="px-6 py-4 whitespace-nowrap text-right">
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10m-11 9h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v11a2 2 0 002 2z"/>
 
-                                    <a href="{{ route('conges.edit',$conge->id) }}"
-                                       class="text-indigo-600 hover:text-indigo-900 mr-3">
-                                        Modifier
-                                    </a>
+                                    </svg>
 
-                                    <form action="{{ route('conges.destroy',$conge->id) }}"
-                                          method="POST"
-                                          class="inline-block"
-                                          onsubmit="return confirm('Supprimer cette demande ?')">
+                                    <p class="text-xl font-semibold text-slate-300">
 
-                                        @csrf
-                                        @method('DELETE')
+                                        Aucune demande de congé.
 
-                                        <button class="text-red-600 hover:text-red-900">
-                                            Supprimer
-                                        </button>
+                                    </p>
 
-                                    </form>
+                                    <p class="mt-2">
 
-                                </td>
+                                        Cliquez sur <strong>Nouvelle demande</strong> pour créer votre première demande.
 
-                            </tr>
+                                    </p>
 
-                        @empty
+                                </div>
 
-                            <tr>
-                                <td colspan="9" class="px-6 py-4 text-center text-gray-500">
-                                    Aucune demande de congé.
-                                </td>
-                            </tr>
+                            </td>
 
-                        @endforelse
+                        </tr>
 
-                        </tbody>
+                    @endforelse
 
-                    </table>
-                </div>
+                    </tbody>
+
+                </table>
 
             </div>
-        </div>
+
+            @if(method_exists($conges,'links'))
+
+                <div class="px-6 py-5 border-t border-slate-700 flex justify-between items-center">
+
+                    <p class="text-sm text-slate-400">
+
+                        Affichage de
+
+                        <span class="font-semibold text-white">
+                            {{ $conges->firstItem() }}
+                        </span>
+
+                        à
+
+                        <span class="font-semibold text-white">
+                            {{ $conges->lastItem() }}
+                        </span>
+
+                        sur
+
+                        <span class="font-semibold text-white">
+                            {{ $conges->total() }}
+                        </span>
+
+                        demandes
+
+                    </p>
+
+                    {{ $conges->links() }}
+
+                </div>
+
+            @endif
+
+        </x-erp.card>
+
     </div>
 
 </x-app-layout>
