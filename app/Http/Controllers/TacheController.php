@@ -32,6 +32,11 @@ class TacheController extends Controller
         if ($request->filled('status')) {
             $query->where('taches.statut', $request->status);
         }
+        if ($request->filled('priorite')) {
+        $query->where('priorite', $request->priorite);
+    }
+
+
 
         $taches = $query->orderBy('taches.created_at', 'desc')->paginate(10)->withQueryString();
         return view('taches.admin', compact('taches'));
@@ -120,6 +125,7 @@ public function update(Request $request, $id)
         'titre_taches' => 'required|string|max:255',
         'date_debut' => 'required|date',
         'user_id' => 'required|exists:users,id',
+        'priorite' => 'required|in:haute,basse,urgent',
     ]);
 
     DB::table('taches')->where('id', $id)->update([

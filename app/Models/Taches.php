@@ -13,6 +13,7 @@ class Taches extends Model
     'description_taches',
     'date_debut',
     'date_fin',
+    'priorite',
     'statut',
     'justif_retard_tache',
     'type_justif',

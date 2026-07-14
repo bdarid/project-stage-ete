@@ -20,7 +20,8 @@ return new class extends Migration
             $table->date('date_debut');
             $table->date('date_fin')->nullable();
             $table->integer('duree')->virtualAs('DATEDIFF(date_fin, date_debut)')->nullable(); //calcul en jour on the fly
-            $table->enum('statut',['en cours','fini','en retard']);
+            $table->enum('statut',['en cours','fini','en retard'])->default('en cours');
+            $table->enum('priorite',['haute','basse','urgent'])->default('basse');
             $table->string('justif_retard_tache');
             $table->enum('type_justif',['accepte','refuse']);
             $table->timestamps();

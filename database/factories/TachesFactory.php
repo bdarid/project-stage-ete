@@ -23,6 +23,7 @@ class TachesFactory extends Factory
             'date_debut' => $dateDebut->format('Y-m-d'),
             'date_fin' => $dateFin->format('Y-m-d'),
             'statut' => $this->faker->randomElement(['en cours', 'fini', 'en retard']),
+            'priorite' => $this->faker->randomElement(['haute', 'basse', 'urgent']),
             'justif_retard_tache' => $this->faker->sentence(),
             'type_justif' => $this->faker->randomElement(['accepte', 'refuse']),
         ];
