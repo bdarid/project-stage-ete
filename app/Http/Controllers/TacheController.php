@@ -10,33 +10,43 @@ use App\Models\Users; // Utilisation correcte de ton modèle Users
 class TacheController extends Controller
 {
     // Afficher la liste des tâches (Admin ou Employé)
-    public function index()
-    {
-        $user = Auth::user();
+    public function index(Request $request)
+{
+    $user = Auth::user();
 
-        if ($user->hasRole('Admin')) {
-            // L'admin voit toutes les tâches avec les colonnes exactes : taches_id et users_id
-            $taches = DB::table('taches')
-                ->leftJoin('user_taches', 'taches.id', '=', 'user_taches.taches_id')
-                ->leftJoin('users', 'user_taches.users_id', '=', 'users.id')
-                ->select('taches.*', 'users.name_users as employe_nom')
-                ->orderBy('taches.created_at', 'desc')
-                ->get();
+    $query = DB::table('taches')
+        ->leftJoin('user_taches', 'taches.id', '=', 'user_taches.taches_id')
+        ->leftJoin('users', 'user_taches.users_id', '=', 'users.id')
+        ->select('taches.*', 'users.name_users as employe_nom');
 
-            return view('taches.admin', compact('taches'));
+    if ($user->hasRole('Admin')) {
+        // Filtre Recherche
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('taches.titre_taches', 'like', "%{$search}%")
+                  ->orWhere('users.name_users', 'like', "%{$search}%");
+            });
+        }
+        // Filtre Statut
+        if ($request->filled('status')) {
+            $query->where('taches.statut', $request->status);
         }
 
-        // L'employé voit uniquement ses tâches avec le bon nom de colonne taches_id et users_id
-        $mesTaches = DB::table('taches')
-            ->join('user_taches', 'taches.id', '=', 'user_taches.taches_id')
-            ->where('user_taches.users_id', $user->id)
-            ->select('taches.*')
-            ->orderBy('taches.created_at', 'desc')
-            ->get();
-
-        return view('taches.employe', compact('mesTaches'));
+        $taches = $query->orderBy('taches.created_at', 'desc')->paginate(10)->withQueryString();
+        return view('taches.admin', compact('taches'));
     }
 
+    // Vue employé inchangée
+    return view('taches.employe', compact('taches'));
+}
+
+public function destroy($id)
+{
+    DB::table('user_taches')->where('taches_id', $id)->delete();
+    DB::table('taches')->where('id', $id)->delete();
+    return redirect()->route('taches.index')->with('success', 'Tâche supprimée avec succès.');
+}
     // Afficher le formulaire de création (Admin/Manager)
     public function create()
     {
@@ -93,4 +103,38 @@ class TacheController extends Controller
 
         return redirect()->back()->with('success', 'Statut mis à jour !');
     }
+    // Afficher le formulaire de modification
+public function edit($id)
+{
+    $tache = DB::table('taches')->where('id', $id)->first();
+    $employes = \App\Models\Users::all();
+    $affectation = DB::table('user_taches')->where('taches_id', $id)->first();
+
+    return view('taches.edit', compact('tache', 'employes', 'affectation'));
 }
+
+// Enregistrer les modifications
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'titre_taches' => 'required|string|max:255',
+        'date_debut' => 'required|date',
+        'user_id' => 'required|exists:users,id',
+    ]);
+
+    DB::table('taches')->where('id', $id)->update([
+        'titre_taches' => $request->titre_taches,
+        'description_taches' => $request->description_taches,
+        'date_debut' => $request->date_debut,
+        'date_fin' => $request->date_fin,
+        'updated_at' => now(),
+    ]);
+
+    // Mise à jour de l'assignation
+    DB::table('user_taches')->where('taches_id', $id)->update([
+        'users_id' => $request->user_id,
+    ]);
+
+    return redirect()->route('taches.index')->with('success', 'Tâche modifiée avec succès !');
+}
+    }

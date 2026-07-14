@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             ObjUserSeeder::class,
             TachesSeeder::class,
             VenteItemSeeder::class,
+            UserTachesSeeder::class,
             VenteSeeder::class,
         ]);
 

@@ -1,8 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <x-erp.page-header title="{{ __('Gestion des Tâches (Vue Admin)') }}" subtitle="Suivi en temps réel de l'avancement des tâches et des assignations d'équipe.">
-            
-        </x-erp.page-header>
+        <x-erp.page-header title="Gestion des Tâches (Vue Admin)" subtitle="Suivi en temps réel de l'avancement des tâches et des assignations d'équipe." />
     </x-slot>
     <a href="{{ route('taches.create') }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg shadow-blue-600/20 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -12,88 +10,82 @@
             </a>
 
     <div class="pb-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            {{-- Message de succès --}}
             @if(session('success'))
-                <div class="mb-6 rounded-2xl border border-green-500/40 bg-green-500/10 p-4 text-green-400 text-sm flex items-center gap-3">
-                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <span>{{ session('success') }}</span>
+                <div class="rounded-2xl border border-green-500/40 bg-green-500/10 p-4 text-green-400 text-sm flex items-center gap-3">
+                    {{ session('success') }}
                 </div>
             @endif
 
-            {{-- Conteneur Principal --}}
+            {{-- Barre de Recherche et Filtres --}}
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 mb-6">
+    <form action="{{ route('taches.index') }}" method="GET" class="flex flex-col md:flex-row gap-4">
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher par titre ou employé..." 
+               class="flex-1 bg-slate-900 border border-slate-700 rounded-lg text-white px-4 py-2">
+        
+        <select name="status" class="bg-slate-900 border border-slate-700 rounded-lg text-white px-4 py-2">
+            <option value="">Tous les statuts</option>
+            <option value="en cours" {{ request('status') == 'en cours' ? 'selected' : '' }}>En cours</option>
+            <option value="fini" {{ request('status') == 'fini' ? 'selected' : '' }}>Fini</option>
+            <option value="en retard" {{ request('status') == 'en retard' ? 'selected' : '' }}>En retard</option>
+        </select>
+
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition">Filtrer</button>
+        @if(request()->anyFilled(['search', 'status']))
+            <a href="{{ route('taches.index') }}" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition">Réinitialiser</a>
+        @endif
+    </form>
+</div>
+
+
             <x-erp.card title="Tâches en cours" subtitle="Vue globale sur l'état d'avancement des collaborateurs.">
                 <div class="overflow-x-auto -mx-6">
-                    <table class="w-full text-left border-collapse" >
-                        <thead >
+                    <table class="w-full text-left border-collapse">
+                        <thead>
                             <tr class="border-b border-slate-700/50 text-slate-400 uppercase text-xs tracking-wider">
-                                <th class="py-4 px-6 font-semibold">Titre</th>
-                                <th class="py-4 px-6 font-semibold">Assigné à</th>
-                                <th class="py-4 px-6 font-semibold">Début</th>
-                                <th class="py-4 px-6 font-semibold">Fin estimée</th>
-                                <th class="py-3 px-6 font-semibold text-center">Statut</th>
+                                <th class="py-4 px-6">Titre</th>
+                                <th class="py-4 px-6">Assigné à</th>
+                                <th class="py-4 px-6">Début</th>
+                                <th class="py-4 px-6">Fin</th>
+                                <th class="py-4 px-6 text-center">Statut</th>
+                                <th class="py-4 px-6 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-800/50 text-slate-300 text-sm">
                             @foreach($taches as $tache)
                                 <tr class="hover:bg-slate-800/30 transition-colors">
-                                    {{-- Titre de la tâche --}}
-                                    <td class="py-4 px-6 font-semibold text-slate-100">
-                                        {{ $tache->titre_taches }}
-                                    </td>
-
-                                    {{-- Assignation --}}
-                                    <td class="py-4 px-6">
-                                        <div class="flex items-center gap-2.5">
-                                            <div class="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-400 uppercase border border-slate-700/80">
-                                                {{ substr($tache->employe_nom ?? 'N', 0, 1) }}
-                                            </div>
-                                            <span class="font-medium text-slate-200">
-                                                {{ $tache->employe_nom ?? 'Non assigné' }}
-                                            </span>
-                                        </div>
-                                    </td>
-
-                                    {{-- Date Début --}}
-                                    <td class="py-4 px-6 text-slate-400">
-                                        {{ \Carbon\Carbon::parse($tache->date_debut)->format('d/m/Y') }}
-                                    </td>
-
-                                    {{-- Date Fin --}}
-                                    <td class="py-4 px-6 text-slate-400">
-                                        {{ $tache->date_fin ? \Carbon\Carbon::parse($tache->date_fin)->format('d/m/Y') : '-' }}
-                                    </td>
-
-                                    {{-- Statut customisé --}}
+                                    <td class="py-4 px-6 font-semibold text-slate-100">{{ $tache->titre_taches }}</td>
+                                    <td class="py-4 px-6">{{ $tache->employe_nom ?? 'Non assigné' }}</td>
+                                    <td class="py-4 px-6">{{ \Carbon\Carbon::parse($tache->date_debut)->format('d/m/Y') }}</td>
+                                    <td class="py-4 px-6">{{ $tache->date_fin ? \Carbon\Carbon::parse($tache->date_fin)->format('d/m/Y') : '-' }}</td>
                                     <td class="py-4 px-6 text-center">
-                                        @if($tache->statut === 'fini')
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-500/10 text-green-400 border border-green-500/20">
-                                                Fini
-                                            </span>
-                                        @elseif($tache->statut === 'en cours')
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                                                En cours
-                                            </span>
-                                        @elseif($tache->statut === 'en retard')
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20">
-                                                En retard
-                                            </span>
-                                        @else
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-slate-500/10 text-slate-400 border border-slate-500/20">
-                                                {{ ucfirst($tache->statut) }}
-                                            </span>
-                                        @endif
+                                        <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold 
+                                            {{ $tache->statut === 'fini' ? 'bg-green-500/10 text-green-400' : 
+                                               ($tache->statut === 'en retard' ? 'bg-red-500/10 text-red-400' : 'bg-blue-500/10 text-blue-400') }}">
+                                            {{ ucfirst($tache->statut) }}
+                                        </span>
+                                    </td>
+                                    <td class="py-4 px-6 text-right flex justify-end gap-2">
+    <a href="{{ route('taches.edit', $tache->id) }}" class="text-blue-400 hover:text-blue-300 font-semibold text-xs transition">Modifier</a>
+    
+    
+</td>
+                                    <td class="py-4 px-6 text-right">
+                                        <form action="{{ route('taches.destroy', $tache->id) }}" method="POST" onsubmit="return confirm('Supprimer cette tâche ?')">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="text-red-400 hover:text-red-300 font-semibold text-xs transition">Supprimer</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="p-6">
+                        {{ $taches->links() }}
+                    </div>
                 </div>
             </x-erp.card>
-
         </div>
     </div>
 </x-app-layout>

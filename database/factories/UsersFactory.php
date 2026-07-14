@@ -28,6 +28,8 @@ class UsersFactory extends Factory
             
             'date_embauche' => fake()->dateTimeBetween('-5 years', 'now'),
             
+            'statut' => fake()->boolean(90) ? 'active' : 'desactive',
+            
             'contract_document' => null, 
             
             // Date de naissance entre 18 et 6o ans

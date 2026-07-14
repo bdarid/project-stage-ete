@@ -18,6 +18,6 @@ class Taches extends Model
     'type_justif',
 ];
     public function users(){
-        return $this->belongsToMany(Users::class);
+        return $this->belongsToMany(Users::class, 'user_taches', 'taches_id', 'users_id');
     }
 }

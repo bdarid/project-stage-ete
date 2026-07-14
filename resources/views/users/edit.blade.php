@@ -77,6 +77,19 @@
                     :value="$user->date_naissance?->format('Y-m-d')"/>
 
             </div>
+            <x-erp.select
+    name="statut"
+    label="Statut">
+
+    <option value="active" {{ $user->statut == 'active' ? 'selected' : '' }}>
+        Actif
+    </option>
+
+    <option value="desactive" {{ $user->statut == 'desactive' ? 'selected' : '' }}>
+        Désactivé
+    </option>
+
+</x-erp.select>
 
             <x-erp.form-actions>
 

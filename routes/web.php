@@ -84,6 +84,9 @@ Route::middleware(['auth'])->group(function () {
         // --- Tâches (Création et assignation uniquement par l'Admin/Manager) ---
         Route::get('/taches/create', [TacheController::class, 'create'])->name('taches.create');
         Route::post('/taches', [TacheController::class, 'store'])->name('taches.store');
+        Route::delete('/taches/{id}', [App\Http\Controllers\TacheController::class, 'destroy'])->name('taches.destroy');
+        Route::get('/taches/{id}/edit', [App\Http\Controllers\TacheController::class, 'edit'])->name('taches.edit');
+        Route::put('/taches/{id}', [App\Http\Controllers\TacheController::class, 'update'])->name('taches.update');
         // --- Gestion des Utilisateurs / Employés ---
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
@@ -91,6 +94,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        // Activer/Désactiver
+        Route::post('/users/{id}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggleStatus');
 
         // Pointage admin
         Route::get('/admin/pointages', [App\Http\Controllers\PointageController::class, 'adminIndex'])->name('pointage.adminindex');
