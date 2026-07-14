@@ -1,57 +1,87 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-white leading-tight">
-            {{ __('Assigner une nouvelle tâche') }}
-        </h2>
+        <x-erp.page-header title="Assigner une nouvelle tâche" subtitle="Définissez les objectifs de la mission et assignez-les à un collaborateur.">
+            <a href="{{ route('taches.index') }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-semibold transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                Retour
+            </a>
+        </x-erp.page-header>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <form action="{{ route('taches.store') }}" method="POST">
-                        @csrf
+    <div class="pb-12">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            
+            {{-- Gestion des erreurs de validation --}}
+            @if($errors->any())
+                <div class="rounded-2xl border border-red-500/40 bg-red-500/10 p-5 mb-6">
+                    <h3 class="font-semibold text-red-400 mb-3">Veuillez corriger les erreurs suivantes :</h3>
+                    <ul class="list-disc ml-6 space-y-1 text-red-300 text-sm">
+                        @foreach($errors->all() as $error) <li>{{ $error }}</li> @endforeach
+                    </ul>
+                </div>
+            @endif
 
-                        <div class="mb-4">
-                            <label class="block text-gray-700 font-bold mb-2">Assigner à (Employé) *</label>
-                            <select name="user_id" class="w-full border-gray-300 rounded-md shadow-sm" required>
+            <form action="{{ route('taches.store') }}" method="POST">
+                @csrf
+
+                <x-erp.card title="Détails de la tâche" subtitle="Veuillez remplir les informations requises (*).">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        {{-- Titre de la tâche --}}
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">Titre de la tâche <span class="text-red-400">*</span></label>
+                            <input type="text" name="titre_taches" value="{{ old('titre_taches') }}" placeholder="Ex : Mise à jour du serveur" class="w-full rounded-xl border border-slate-700 bg-slate-900 text-white px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition" required>
+                        </div>
+
+                        {{-- Employé assigné --}}
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">Assigné à (Employé) <span class="text-red-400">*</span></label>
+                            <select name="user_id" class="w-full rounded-xl border border-slate-700 bg-slate-900 text-white px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition" required>
                                 <option value="">-- Choisir un employé --</option>
                                 @foreach($employes as $employe)
-                                    <option value="{{ $employe->id }}">{{ $employe->name }} ({{ $employe->email }})</option>
+                                    <option value="{{ $employe->id }}" {{ old('user_id') == $employe->id ? 'selected' : '' }}>
+                                        {{ $employe->name }} ({{ $employe->email }})
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block text-gray-700 font-bold mb-2">Titre de la tâche *</label>
-                            <input type="text" name="titre_taches" class="w-full border-gray-300 rounded-md shadow-sm" required>
+                        {{-- Description --}}
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">Description de la mission <span class="text-red-400">*</span></label>
+                            <textarea name="description_taches" rows="4" placeholder="Détaillez les actions à effectuer..." class="w-full rounded-xl border border-slate-700 bg-slate-900 text-white px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition resize-y" required>{{ old('description_taches') }}</textarea>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block text-gray-700 font-bold mb-2">Description de la mission *</label>
-                            <textarea name="description_taches" rows="4" class="w-full border-gray-300 rounded-md shadow-sm" required></textarea>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div>
-                                <label class="block text-gray-700 font-bold mb-2">Date de début *</label>
-                                <input type="date" name="date_debut" class="w-full border-gray-300 rounded-md shadow-sm" required>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 font-bold mb-2">Date de fin estimée</label>
-                                <input type="date" name="date_fin" class="w-full border-gray-300 rounded-md shadow-sm">
+                        {{-- Date de début --}}
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">Date de début <span class="text-red-400">*</span></label>
+                            <div class="relative">
+                                <input type="date" name="date_debut" value="{{ old('date_debut') }}" class="w-full rounded-xl border border-slate-700 bg-slate-900 text-white px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition [color-scheme:dark]" required>
                             </div>
                         </div>
 
-                        <div class="flex justify-end">
-                            <a href="{{ route('taches.index') }}" class="text-gray-500 hover:text-gray-700 px-4 py-2 mr-2">Annuler</a>
-                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
-                                Enregistrer la tâche
-                            </button>
+                        {{-- Date de fin estimée --}}
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">Date de fin estimée</label>
+                            <div class="relative">
+                                <input type="date" name="date_fin" value="{{ old('date_fin') }}" class="w-full rounded-xl border border-slate-700 bg-slate-900 text-white px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition [color-scheme:dark]">
+                            </div>
                         </div>
-                    </form>
+
+                    </div>
+                </x-erp.card>
+
+                {{-- Actions --}}
+                <div class="flex flex-col sm:flex-row justify-end gap-4 mt-6">
+                    <a href="{{ route('taches.index') }}" class="px-6 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-semibold text-center transition">
+                        Annuler
+                    </a>
+                    <button type="submit" class="px-8 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg shadow-blue-600/20 transition">
+                        Enregistrer la tâche
+                    </button>
                 </div>
-            </div>
+            </form>
+
         </div>
     </div>
 </x-app-layout>

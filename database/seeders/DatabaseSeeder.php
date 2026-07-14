@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Users; 
 use App\Models\Departements;
 use App\Models\Objectif;
+use App\Models\Users; 
+use Database\Seeders\TachesSeeder;
+use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
@@ -23,6 +24,7 @@ class DatabaseSeeder extends Seeder
             PointageSeeder::class,
             ProduitSeeder::class,
             StockSeeder::class,
+            ObjUserSeeder::class,
             TachesSeeder::class,
             VenteItemSeeder::class,
             VenteSeeder::class,
