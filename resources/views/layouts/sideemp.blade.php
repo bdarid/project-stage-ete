@@ -47,7 +47,7 @@
 
     <nav class="space-y-1 mb-8">
 
-        <a href="{{ route('taches.index') }}"
+        <a href="{{ route('taches.employe') }}"
            class="flex items-center gap-3 px-4 py-2.5 text-slate-400 hover:bg-slate-700/50 hover:text-slate-200 rounded-xl font-medium transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

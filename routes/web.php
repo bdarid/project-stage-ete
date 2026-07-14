@@ -53,8 +53,13 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/conges/{id}', [CongeController::class, 'destroy'])->name('conges.destroy');
 
     // --- Tâches (Lecture et MAJ du statut par l'employé) ---
-    Route::get('/taches', [TacheController::class, 'index'])->name('taches.index');
+    Route::get('/taches', [TacheController::class, 'index'])->name('taches.employe');
+    
+    // NOUVELLE ROUTE : Afficher les détails d'une tâche en plein écran
+    Route::get('/taches/{id}/details', [TacheController::class, 'show'])->name('taches.show');
+    
     Route::patch('/taches/{id}/statut', [TacheController::class, 'updateStatut'])->name('taches.updateStatut');
+    
     Route::resource('departements', DepartementController::class);
 
     // --- Création de produit et consulter le stock ---
@@ -71,8 +76,6 @@ Route::middleware(['auth'])->group(function () {
     //categories
     Route::resource('categories', CategorieController::class);
 
-
-
     // ====================================================
     // MODULES RÉSERVÉS UNIQUEMENT AUX ADMINS & MANAGERS
     // ====================================================
@@ -84,9 +87,10 @@ Route::middleware(['auth'])->group(function () {
         // --- Tâches (Création et assignation uniquement par l'Admin/Manager) ---
         Route::get('/taches/create', [TacheController::class, 'create'])->name('taches.create');
         Route::post('/taches', [TacheController::class, 'store'])->name('taches.store');
-        Route::delete('/taches/{id}', [App\Http\Controllers\TacheController::class, 'destroy'])->name('taches.destroy');
-        Route::get('/taches/{id}/edit', [App\Http\Controllers\TacheController::class, 'edit'])->name('taches.edit');
-        Route::put('/taches/{id}', [App\Http\Controllers\TacheController::class, 'update'])->name('taches.update');
+        Route::delete('/taches/{id}', [TacheController::class, 'destroy'])->name('taches.destroy');
+        Route::get('/taches/{id}/edit', [TacheController::class, 'edit'])->name('taches.edit');
+        Route::put('/taches/{id}', [TacheController::class, 'update'])->name('taches.update');
+        
         // --- Gestion des Utilisateurs / Employés ---
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
@@ -98,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/users/{id}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggleStatus');
 
         // Pointage admin
-        Route::get('/admin/pointages', [App\Http\Controllers\PointageController::class, 'adminIndex'])->name('pointage.adminindex');
+        Route::get('/admin/pointages', [PointageController::class, 'adminIndex'])->name('pointage.adminindex');
 
     });
 });

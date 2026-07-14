@@ -218,7 +218,7 @@
                 { name: 'Ventes', url: '{{ route("ventes.index") }}', icon: '💰' },
                 { name: 'Achats', url: '{{ route("achats.index") }}', icon: '🛒' },
                 { name: 'Catégories', url: '{{ route("categories.index") }}', icon: '📑' },
-                { name: 'Tâches', url: '{{ route("taches.index") }}', icon: '✅' },
+                { name: 'Tâches', url: '{{ route("taches.employe") }}', icon: '✅' },
                 { name: 'Objectifs', url: '{{ route("objectifs.index") }}', icon: '🎯' },
             ];
 

@@ -12,6 +12,7 @@ class Taches extends Model
     'titre_taches',
     'description_taches',
     'date_debut',
+    'duree',
     'date_fin',
     'priorite',
     'statut',

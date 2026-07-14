@@ -36,6 +36,24 @@
                     type="date" 
                     value="{{ old('date_fin', $tache->date_fin ? \Carbon\Carbon::parse($tache->date_fin)->format('Y-m-d') : '') }}"/>
             </div>
+            <x-erp.select name="priorite" label="Priorité">
+    <option value="">-- Sélectionner une priorité --</option>
+
+    <option value="basse"
+        {{ old('priorite', $tache->priorite) == 'basse' ? 'selected' : '' }}>
+        Basse
+    </option>
+
+    <option value="haute"
+        {{ old('priorite', $tache->priorite) == 'haute' ? 'selected' : '' }}>
+        Haute
+    </option>
+
+    <option value="urgent"
+        {{ old('priorite', $tache->priorite) == 'urgent' ? 'selected' : '' }}>
+        Urgente
+    </option>
+</x-erp.select>
 
             <x-erp.select name="user_id" label="Assigner à un employé">
                 @foreach($employes as $emp)

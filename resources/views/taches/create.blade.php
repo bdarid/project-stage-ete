@@ -67,6 +67,32 @@
                                 <input type="date" name="date_fin" value="{{ old('date_fin') }}" class="w-full rounded-xl border border-slate-700 bg-slate-900 text-white px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition [color-scheme:dark]">
                             </div>
                         </div>
+                        {{-- Priorité --}}
+<div class="md:col-span-2">
+    <label class="block text-sm font-semibold text-slate-300 mb-2">
+        Priorité <span class="text-red-400">*</span>
+    </label>
+
+    <select
+        name="priorite"
+        class="w-full rounded-xl border border-slate-700 bg-slate-900 text-white px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition"
+        required
+    >
+        <option value="">-- Choisir une priorité --</option>
+
+        <option value="basse" {{ old('priorite') == 'basse' ? 'selected' : '' }}>
+            🟢 Basse
+        </option>
+
+        <option value="haute" {{ old('priorite') == 'haute' ? 'selected' : '' }}>
+            🟠 Haute
+        </option>
+
+        <option value="urgent" {{ old('priorite') == 'urgent' ? 'selected' : '' }}>
+            🔴 Urgente
+        </option>
+    </select>
+</div>
 
                     </div>
                 </x-erp.card>

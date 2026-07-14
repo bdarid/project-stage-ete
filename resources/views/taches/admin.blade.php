@@ -57,6 +57,7 @@
                                 <th class="py-4 px-6">Assigné à</th>
                                 <th class="py-4 px-6">Début</th>
                                 <th class="py-4 px-6">Fin</th>
+                                <th class="py-4 px-6">Duree</th>
                                 <th class="py-4 px-6 text-center">Statut</th>
                                 <th class="py-4 px-6 text-center">Priorité</th>
                                 <th class="py-4 px-6 text-right">Actions</th>
@@ -69,6 +70,7 @@
                                     <td class="py-4 px-6">{{ $tache->employe_nom ?? 'Non assigné' }}</td>
                                     <td class="py-4 px-6">{{ \Carbon\Carbon::parse($tache->date_debut)->format('d/m/Y') }}</td>
                                     <td class="py-4 px-6">{{ $tache->date_fin ? \Carbon\Carbon::parse($tache->date_fin)->format('d/m/Y') : '-' }}</td>
+                                    <td class="py-4 px-6">{{ $tache->duree }} days</td>
                                     
                                     {{-- Colonne Statut --}}
                                     <td class="py-4 px-6 text-center">
