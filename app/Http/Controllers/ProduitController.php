@@ -11,17 +11,63 @@ class ProduitController extends Controller
 // ==========================================
 // 1. MÉTHODE INDEX : Afficher la liste (Celle qui manquait !)
 // ==========================================
-public function index()
+public function index(Request $request)
 {
-// On récupère tous les produits
-$produits = Produit::with('user')
-    ->orderBy('created_at', 'desc')
-    ->paginate(10);
+    $query = Produit::with(['user', 'categorie']);
 
-// Petite logique pour l'alerte de stock (Produits dont la quantité < 5)
-$alertesStock = Produit::where('quantite_produit', '<', 5)->get();
+    // Recherche
+    if ($request->filled('search')) {
+        $query->where(function ($q) use ($request) {
+            $q->where('nom_produit', 'like', '%' . $request->search . '%')
+              ->orWhere('reference', 'like', '%' . $request->search . '%');
+        });
+    }
 
-return view('produits.index', compact('produits', 'alertesStock'));
+    // Filtre catégorie
+    if ($request->filled('categorie')) {
+        $query->where('categorie_id', $request->categorie);
+    }
+
+    // Filtre créateur
+    if ($request->filled('createur')) {
+        $query->where('users_id', $request->createur);
+    }
+
+    // Filtre statut
+    if ($request->filled('statut')) {
+
+        switch ($request->statut) {
+
+            case 'rupture':
+                $query->where('quantite_produit', 0);
+                break;
+
+            case 'faible':
+                $query->whereBetween('quantite_produit', [1,5]);
+                break;
+
+            case 'stock':
+                $query->where('quantite_produit', '>', 5);
+                break;
+        }
+    }
+
+    $produits = $query
+        ->orderByDesc('created_at')
+        ->paginate(10)
+        ->withQueryString();
+
+    $categories = \App\Models\Categorie::orderBy('nom_categorie')->get();
+    $users = \App\Models\Users::orderBy('name_users')->get();
+
+    $alertesStock = Produit::where('quantite_produit','<',5)->get();
+
+    return view('produits.index', compact(
+        'produits',
+        'alertesStock',
+        'categories',
+        'users'
+    ));
 }
 
 // ==========================================

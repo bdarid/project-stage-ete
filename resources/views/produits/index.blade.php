@@ -31,6 +31,96 @@
         >
 
             <div class="overflow-x-auto">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 mb-6">
+
+    <form method="GET" action="{{ route('produits.index') }}"
+          class="grid grid-cols-1 md:grid-cols-5 gap-4">
+
+        <input
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            placeholder="Nom ou référence..."
+            class="rounded-xl bg-slate-900 border border-slate-700 text-white px-4 py-2">
+
+        <select
+            name="categorie"
+            class="rounded-xl bg-slate-900 border border-slate-700 text-white px-4 py-2">
+
+            <option value="">Toutes les catégories</option>
+
+            @foreach($categories as $categorie)
+
+                <option value="{{ $categorie->id }}"
+                    {{ request('categorie') == $categorie->id ? 'selected' : '' }}>
+
+                    {{ $categorie->nom_categorie }}
+
+                </option>
+
+            @endforeach
+
+        </select>
+
+        <select
+            name="createur"
+            class="rounded-xl bg-slate-900 border border-slate-700 text-white px-4 py-2">
+
+            <option value="">Tous les créateurs</option>
+
+            @foreach($users as $user)
+
+                <option value="{{ $user->id }}"
+                    {{ request('createur') == $user->id ? 'selected' : '' }}>
+
+                    {{ $user->name_users }}
+
+                </option>
+
+            @endforeach
+
+        </select>
+
+        <select
+            name="statut"
+            class="rounded-xl bg-slate-900 border border-slate-700 text-white px-4 py-2">
+
+            <option value="">Tous les statuts</option>
+            <option value="stock" {{ request('statut')=='stock'?'selected':'' }}>
+                En stock
+            </option>
+
+            <option value="faible" {{ request('statut')=='faible'?'selected':'' }}>
+                Stock faible
+            </option>
+
+            <option value="rupture" {{ request('statut')=='rupture'?'selected':'' }}>
+                Rupture
+            </option>
+
+        </select>
+
+        <div class="flex gap-2">
+
+            <button
+                class="flex-1 bg-blue-600 hover:bg-blue-700 rounded-xl text-white font-semibold">
+
+                Rechercher
+
+            </button>
+
+            <a href="{{ route('produits.index') }}"
+               class="px-4 bg-slate-700 hover:bg-slate-600 rounded-xl text-white flex items-center">
+
+                Réinitialiser
+
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
 
                 <table class="min-w-full">
 
