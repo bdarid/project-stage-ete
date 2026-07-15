@@ -68,8 +68,29 @@
 
                     {{-- Catégorie ID --}}
                     <div>
-                        <label for="categorie_id" class="block text-sm font-semibold text-slate-300 mb-2">ID Catégorie</label>
-                        <input type="number" name="categorie_id" id="categorie_id" placeholder="Ex: 1" value="{{ old('categorie_id') }}" class="w-full rounded-xl border border-slate-700 bg-slate-900 text-white px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition" required>
+                        <div>
+    <label for="categorie_id" class="block text-sm font-semibold text-slate-300 mb-2">
+        Catégorie
+    </label>
+
+    <select
+        name="categorie_id"
+        id="categorie_id"
+        class="w-full rounded-xl border border-slate-700 bg-slate-900 text-white px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition"
+        required>
+
+        <option value="">Sélectionnez une catégorie</option>
+
+        @foreach($categories as $categorie)
+            <option
+                value="{{ $categorie->id }}"
+                {{ old('categorie_id') == $categorie->id ? 'selected' : '' }}>
+                {{ $categorie->nom_categorie }}
+            </option>
+        @endforeach
+
+    </select>
+</div>
                     </div>
                 </div>
 

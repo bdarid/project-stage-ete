@@ -26,7 +26,7 @@
         <x-erp.card
             title="Catalogue Produits"
             subtitle="Tous les produits enregistrés."
-            :count="$produits->count()"
+            :count="$produits->total()"
             label="Produits"
         >
 
@@ -39,6 +39,7 @@
                         <tr class="text-slate-400 uppercase text-xs tracking-wider">
 
                             <th class="px-6 py-4 text-left">Produit</th>
+                            <th class="px-6 py-4 text-left">Créé par</th>
 
                             <th class="px-6 py-4 text-center">Prix Vente</th>
 
@@ -91,6 +92,31 @@
                                     </div>
 
                                 </td>
+                                <td class="px-6 py-5">
+
+    <div class="flex items-center gap-3">
+
+        <div class="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400 font-bold">
+
+            {{ strtoupper(substr($produit->user->name_users ?? '-', 0, 1)) }}
+
+        </div>
+
+        <div>
+
+            <p class="font-semibold text-white">
+                {{ $produit->user->name_users ?? 'Inconnu' }}
+            </p>
+
+            <p class="text-xs text-slate-500">
+                Créateur
+            </p>
+
+        </div>
+
+    </div>
+
+</td>
 
                                 <td class="px-6 py-5 text-center text-white">
 
@@ -188,7 +214,7 @@
 
                             <tr>
 
-                                <td colspan="7" class="py-14 text-center text-slate-500">
+                                <td colspan="8" class="py-14 text-center text-slate-500">
 
                                     <svg class="mx-auto w-12 h-12 mb-3 opacity-50"
                                          fill="none"
@@ -215,6 +241,39 @@
                 </table>
 
             </div>
+            @if(method_exists($produits, 'links'))
+
+    <div class="px-6 py-5 border-t border-slate-700 flex justify-between items-center">
+
+        <p class="text-sm text-slate-400">
+
+            Affichage de
+
+            <span class="font-semibold text-white">
+                {{ $produits->firstItem() }}
+            </span>
+
+            à
+
+            <span class="font-semibold text-white">
+                {{ $produits->lastItem() }}
+            </span>
+
+            sur
+
+            <span class="font-semibold text-white">
+                {{ $produits->total() }}
+            </span>
+
+            produits
+
+        </p>
+
+        {{ $produits->links() }}
+
+    </div>
+
+@endif
 
         </x-erp.card>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Produit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Categorie;
 
 class ProduitController extends Controller
 {
@@ -13,7 +14,9 @@ class ProduitController extends Controller
 public function index()
 {
 // On récupère tous les produits
-$produits = Produit::all();
+$produits = Produit::with('user')
+    ->orderBy('created_at', 'desc')
+    ->paginate(10);
 
 // Petite logique pour l'alerte de stock (Produits dont la quantité < 5)
 $alertesStock = Produit::where('quantite_produit', '<', 5)->get();
@@ -26,7 +29,9 @@ return view('produits.index', compact('produits', 'alertesStock'));
 // ==========================================
 public function create()
 {
-return view('produits.create');
+    $categories = Categorie::orderBy('nom_categorie')->get();
+
+    return view('produits.create', compact('categories'));
 }
 
 // ==========================================
@@ -43,7 +48,7 @@ $validated = $request->validate([
 'date_expiration' => 'required|date',
 'prix_achat_moy' => 'required|numeric|min:0',
 'prix_vente_moy' => 'required|numeric|min:0',
-'categorie_id' => 'required|integer'
+'categorie_id' => 'required|exists:categories,id'
 ]);
 
 // 2. Ajout des champs automatiques
@@ -59,12 +64,12 @@ return redirect()->route('produits.index')->with('success', 'Produit ajouté ave
     // 4. MÉTHODE EDIT : Afficher le formulaire de modification
     // ==========================================
     public function edit($id)
-    {
-        // On cherche le produit, s'il n'existe pas = erreur 404 automatique
-        $produit = Produit::findOrFail($id);
+{
+    $produit = Produit::findOrFail($id);
+    $categories = Categorie::orderBy('nom_categorie')->get();
 
-        return view('produits.edit', compact('produit'));
-    }
+    return view('produits.edit', compact('produit', 'categories'));
+}
 
     // ==========================================
     // 5. MÉTHODE UPDATE : Enregistrer les modifications
@@ -83,7 +88,7 @@ return redirect()->route('produits.index')->with('success', 'Produit ajouté ave
             'date_expiration' => 'required|date',
             'prix_achat_moy' => 'required|numeric|min:0',
             'prix_vente_moy' => 'required|numeric|min:0',
-            'categorie_id' => 'required|integer'
+            'categorie_id' => 'required|exists:categories,id'
         ]);
 
         // Mise à jour du stock actuel
