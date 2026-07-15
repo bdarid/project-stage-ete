@@ -14,6 +14,7 @@ class Conge extends Model
         'solde',
         'users_id',
         'statut',
+        'motif_refus',
         'reponse',
         'type_conge',
     ];

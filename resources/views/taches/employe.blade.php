@@ -87,13 +87,42 @@
                                     <span><strong>Début :</strong> {{ \Carbon\Carbon::parse($tache->date_debut)->format('d/m/Y') }}</span>
                                 </div>
                                 @if($tache->date_fin)
-                                    <div class="flex items-center gap-2">
-                                        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                        <span class="{{ $tache->statut === 'en retard' ? 'text-red-400' : '' }}">
-                                            <strong>Échéance :</strong> {{ \Carbon\Carbon::parse($tache->date_fin)->format('d/m/Y') }}
-                                        </span>
-                                    </div>
-                                @endif
+
+    <div class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+
+        <span class="{{ $tache->statut === 'en retard' ? 'text-red-400' : '' }}">
+            <strong>Échéance :</strong>
+            {{ \Carbon\Carbon::parse($tache->date_fin)->format('d/m/Y') }}
+        </span>
+
+    </div>
+
+    <div class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+
+        <span>
+            <strong>Durée :</strong>
+
+            {{
+                \Carbon\Carbon::parse($tache->date_debut)
+                    ->diffInDays(\Carbon\Carbon::parse($tache->date_fin)) 
+            }}
+
+            jour(s)
+        </span>
+
+    </div>
+
+@endif
                             </div>
 
                             {{-- Formulaire de changement de statut --}}

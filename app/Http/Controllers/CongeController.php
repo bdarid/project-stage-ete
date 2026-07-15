@@ -85,27 +85,27 @@ class CongeController extends Controller
     // 3. Valider ou Refuser un congé (Admin / Manager uniquement)
     public function updateStatut(Request $request, $id)
 {
-    $request->validate([
-        'reponse' => 'required|in:accepte,refuse'
-    ]);
+   $request->validate([
+    'reponse' => 'required|in:accepte,refuse',
+    'motif_refus' => 'required_if:reponse,refuse|nullable|string|max:1000',
+]);
 
     $conge = Conge::findOrFail($id);
     $user = $conge->user; // Assurez-vous que la relation 'user' existe dans votre modèle Conge
 
-    // 1. Logique de déduction du solde (si accepté et pas encore accepté)
     
-
-    // 2. Logique de "remboursement" (Optionnel)
-    // Si on passe de "accepte" à "refuse", on rend les jours à l'employé
    
 
     // 3. Mise à jour de la demande
     $statut = $request->reponse === 'accepte' ? 'en cours' : 'hors conge';
 
     $conge->update([
-        'reponse' => $request->reponse,
-        'statut'  => $statut,
-    ]);
+    'reponse' => $request->reponse,
+    'statut' => $statut,
+    'motif_refus' => $request->reponse === 'refuse'
+        ? $request->motif_refus
+        : null,
+]);
     if ($request->reponse === 'accepte') {
 
     NotificationService::send(
@@ -118,11 +118,11 @@ class CongeController extends Controller
 } else {
 
     NotificationService::send(
-        $conge->users_id,
-        'Congé refusé',
-        'Votre demande de congé a été refusée.',
-        'danger'
-    );
+    $conge->users_id,
+    'Congé refusé',
+    'Votre demande de congé a été refusée. Motif : '.$request->motif_refus,
+    'danger'
+);
 
 }
 

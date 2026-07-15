@@ -109,41 +109,69 @@
 
                         <div class="flex flex-wrap gap-4">
 
-                            <form action="{{ route('conges.valider', $conge->id) }}" method="POST">
+                            <form action="{{ route('conges.valider',$conge->id) }}" method="POST" class="space-y-4">
 
-                                @csrf
-                                @method('PUT')
+    @csrf
+    @method('PUT')
 
-                                <input type="hidden" name="reponse" value="accepte">
+    <div>
+        <label class="block text-sm font-medium text-slate-300 mb-2">
+            Décision
+        </label>
 
-                                <button
-                                    type="submit"
-                                    onclick="return confirm('Êtes-vous sûr de vouloir accepter cette demande ?')"
-                                    class="px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold transition">
+        <select
+            name="reponse"
+            id="reponse"
+            class="w-full rounded-xl bg-slate-800 border border-slate-600 text-white px-4 py-2">
 
-                                    ✓ Accepter
+            <option value="accepte">Accepter</option>
+            <option value="refuse">Refuser</option>
 
-                                </button>
+        </select>
+    </div>
 
-                            </form>
+    <div id="motifRefus" class="hidden">
 
-                            <form action="{{ route('conges.valider', $conge->id) }}" method="POST">
+        <label class="block text-sm font-medium text-slate-300 mb-2">
+            Motif du refus
+        </label>
 
-                                @csrf
-                                @method('PUT')
+        <textarea
+            name="motif_refus"
+            rows="4"
+            class="w-full rounded-xl bg-slate-800 border border-slate-600 text-white px-4 py-3"
+            placeholder="Expliquez pourquoi cette demande est refusée..."></textarea>
 
-                                <input type="hidden" name="reponse" value="refuse">
+    </div>
 
-                                <button
-                                    type="submit"
-                                    onclick="return confirm('Êtes-vous sûr de vouloir refuser cette demande ?')"
-                                    class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold transition">
+    <button
+        class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold">
 
-                                    ✕ Refuser
+        Enregistrer la décision
 
-                                </button>
+    </button>
 
-                            </form>
+</form>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const select = document.getElementById('reponse');
+    const motif = document.getElementById('motifRefus');
+
+    function toggleMotif() {
+        if (select.value === 'refuse') {
+            motif.classList.remove('hidden');
+        } else {
+            motif.classList.add('hidden');
+        }
+    }
+
+    toggleMotif();
+
+    select.addEventListener('change', toggleMotif);
+
+});
+</script>
 
                         </div>
 

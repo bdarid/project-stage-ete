@@ -70,6 +70,7 @@
                             <th class="px-6 py-4 text-left">Solde</th>
                             <th class="px-6 py-4 text-left">Statut</th>
                             <th class="px-6 py-4 text-left">Réponse</th>
+                            <th class="px-6 py-4 text-left">Motif</th>
                             <th class="px-6 py-4 text-right">Actions</th>
 
                         </tr>
@@ -230,12 +231,38 @@
                                 @endif
 
                             </td>
+                            
+                             <td class="px-6 py-5">
+
+    @if($conge->reponse == 'refuse')
+
+        @if($conge->motif_refus)
+
+            <div class="max-w-xs whitespace-normal break-words text-red-300 text-sm">
+                {{ $conge->motif_refus }}
+            </div>
+
+        @else
+
+            <span class="text-slate-500 italic">
+                Aucun motif
+            </span>
+
+        @endif
+
+    @else
+
+        <span class="text-slate-500">—</span>
+
+    @endif
+
+</td>
 
                             {{-- Actions --}}
                             <td class="px-6 py-5">
 
                                 <div class="flex justify-end gap-2">
-                                                                    @if($conge->reponse != 'accepte')
+                                                                    @if($conge->reponse == null)
 
                                         <a href="{{ route('conges.edit', $conge->id) }}"
                                            class="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition">
@@ -280,7 +307,7 @@
 
                         <tr>
 
-                            <td colspan="10" class="py-16 text-center">
+                            <td colspan="11" class="py-16 text-center">
 
                                 <div class="text-slate-500">
 
