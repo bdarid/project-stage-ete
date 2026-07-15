@@ -21,7 +21,7 @@
 
             {{-- Barre de Recherche et Filtres --}}
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 mb-6">
-                <form action="{{ route('taches.index') }}" method="GET" class="flex flex-col md:flex-row gap-4">
+                <form action="{{ route('taches.admin') }}" method="GET" class="flex flex-col md:flex-row gap-4">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher par titre ou employé..." 
                            class="flex-1 bg-slate-900 border border-slate-700 rounded-lg text-white px-4 py-2">
                     
@@ -43,7 +43,7 @@
 
                     <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition">Filtrer</button>
                     @if(request()->anyFilled(['search', 'status', 'priorite']))
-                        <a href="{{ route('taches.index') }}" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition">Réinitialiser</a>
+                        <a href="{{ route('taches.admin') }}" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition">Réinitialiser</a>
                     @endif
                 </form>
             </div>

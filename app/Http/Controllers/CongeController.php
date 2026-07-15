@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Conge;
 use Carbon\Carbon;
+use App\Services\NotificationService;
+
+
 
 class CongeController extends Controller
 {
@@ -71,29 +74,60 @@ class CongeController extends Controller
             'statut'     => 'en attente',     // En minuscule, comme dans votre migration
             'type_conge' => $request->type_conge,
         ]);
+        NotificationService::sendToAdmins(
+    'Nouvelle demande de congé',
+    $user->name_users . ' a demandé un congé.',
+    'warning'
+);
 
         return redirect()->route('conges')->with('success', 'Demande de congé créée avec succès.');    }
 
     // 3. Valider ou Refuser un congé (Admin / Manager uniquement)
     public function updateStatut(Request $request, $id)
-    {
-        // Validation calquée sur votre colonne 'reponse' de la migration
-        $request->validate([
-            'reponse' => 'required|in:accepte,refuse'
-        ]);
+{
+    $request->validate([
+        'reponse' => 'required|in:accepte,refuse'
+    ]);
 
-        $conge = Conge::findOrFail($id);
+    $conge = Conge::findOrFail($id);
+    $user = $conge->user; // Assurez-vous que la relation 'user' existe dans votre modèle Conge
 
-        // Si accepté, on passe le statut 'en cours' ou on le laisse gérer par l'administration
-        $statut = $request->reponse === 'accepte' ? 'en cours' : 'hors conge';
+    // 1. Logique de déduction du solde (si accepté et pas encore accepté)
+    
 
-        $conge->update([
-            'reponse' => $request->reponse,
-            'statut'  => $statut,
-        ]);
+    // 2. Logique de "remboursement" (Optionnel)
+    // Si on passe de "accepte" à "refuse", on rend les jours à l'employé
+   
 
-        return redirect()->back()->with('success', 'La réponse au congé a bien été enregistrée.');
-    }
+    // 3. Mise à jour de la demande
+    $statut = $request->reponse === 'accepte' ? 'en cours' : 'hors conge';
+
+    $conge->update([
+        'reponse' => $request->reponse,
+        'statut'  => $statut,
+    ]);
+    if ($request->reponse === 'accepte') {
+
+    NotificationService::send(
+        $conge->users_id,
+        'Congé accepté',
+        'Votre demande de congé a été acceptée.',
+        'success'
+    );
+
+} else {
+
+    NotificationService::send(
+        $conge->users_id,
+        'Congé refusé',
+        'Votre demande de congé a été refusée.',
+        'danger'
+    );
+
+}
+
+    return redirect()->back()->with('success', 'La réponse a été enregistrée et le solde mis à jour.');
+}
     public function destroy($id)
 {
     $conge = Conge::findOrFail($id);

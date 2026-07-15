@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <x-erp.page-header title="Assigner une nouvelle tâche" subtitle="Définissez les objectifs de la mission et assignez-les à un collaborateur.">
-            <a href="{{ route('taches.index') }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-semibold transition">
+            <a href="{{ route('taches.admin') }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-semibold transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 Retour
             </a>
@@ -99,7 +99,7 @@
 
                 {{-- Actions --}}
                 <div class="flex flex-col sm:flex-row justify-end gap-4 mt-6">
-                    <a href="{{ route('taches.index') }}" class="px-6 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-semibold text-center transition">
+                    <a href="{{ route('taches.admin') }}" class="px-6 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-semibold text-center transition">
                         Annuler
                     </a>
                     <button type="submit" class="px-8 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg shadow-blue-600/20 transition">

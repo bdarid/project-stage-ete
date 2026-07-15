@@ -59,13 +59,22 @@
 
                         <div class="py-1">
                             <a href="{{ route('dashboard') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">
-                                📊 Dashboard
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                                </svg>
+                                Dashboard
                             </a>
                             <a href="{{ route('pointage.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">
-                                ⏱️ Pointer l'Heure
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Pointer l'Heure
                             </a>
                             <a href="{{ route('conges') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">
-                                📅 Demande Congé
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                Demande Congé
                             </a>
                         </div>
 
@@ -73,27 +82,67 @@
                         <div class="py-2">
                             <div class="px-4 py-1 text-[10px] font-black text-slate-500 uppercase tracking-wider">RH & Équipe</div>
                             <a href="{{ route('users.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">
-                                👥 Liste des Employés
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4zm6 0a4 4 0 10-4-4"/>
+                                </svg>
+                                Liste des Employés
                             </a>
                             <a href="{{ route('users.create') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-blue-400 font-medium hover:bg-slate-700 hover:text-blue-300 transition-colors">
-                                ➕ Ajouter un Employé
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                Ajouter un Employé
                             </a>
                         </div>
                         <div class="py-2">
                             <div class="px-4 py-1 text-[10px] font-black text-slate-500 uppercase tracking-wider">Logistique & Ventes</div>
                             <a href="{{ route('produits.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">
-                                📦 Gérer les Produits
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                </svg>
+                                Gérer les Produits
                             </a>
                             <a href="{{ route('ventes.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">
-                                💰 Gérer les Ventes
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Gérer les Ventes
                             </a>
                             <a href="{{ route('achats.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">
-                                🛒 Gérer les Achats
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                Gérer les Achats
                             </a>
                         </div>
                         @endrole
                     </div>
                 </div>
+                <div class="relative">
+
+    <a href="{{ route('notifications.index') }}"
+       class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-slate-900 border border-slate-700 hover:border-blue-500 transition">
+
+        <svg class="w-5 h-5 text-slate-300"
+             fill="none"
+             stroke="currentColor"
+             viewBox="0 0 24 24">
+
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5m6 0a3 3 0 11-6 0h6z"/>
+        </svg>
+
+        @if($nbNotifications > 0)
+            <span class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                {{ $nbNotifications }}
+            </span>
+        @endif
+
+    </a>
+
+</div>
 
                 <!-- INFO UTILISATEUR & BADGE -->
                 <div class="flex items-center gap-3 text-sm font-medium text-slate-200 border-l border-slate-700 pl-4">
@@ -175,7 +224,7 @@
     </div>
 </nav>
 
-<!-- SCRIPT JS (Logique intacte, Couleurs Tailwind injectées mises à jour) -->
+<!-- SCRIPT JS (Logique intacte, icônes emoji remplacées par des SVG) -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Fix Menu Actions
@@ -207,19 +256,22 @@
         const searchList = document.getElementById('search-list');
 
         if (searchInput) {
+            // Petit helper pour générer une icône SVG (remplace les emojis)
+            const icon = (path) => `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${path}"/></svg>`;
+
             const modules = [
-                { name: 'Tableau de bord', url: '{{ route("dashboard") }}', icon: '📊' },
-                { name: 'Gestion des Employés', url: '{{ route("users.index") }}', icon: '👥' },
-                { name: 'Départements', url: '{{ route("departements.index") }}', icon: '🏢' },
-                { name: 'Pointages', url: '{{ route("pointage.adminindex") }}', icon: '⏱️' },
-                { name: 'Congés', url: '{{ route("conges") }}', icon: '📅' },
-                { name: 'Produits', url: '{{ route("produits.index") }}', icon: '📦' },
-                { name: 'Stocks', url: '{{ route("stocks.index") }}', icon: '🏭' },
-                { name: 'Ventes', url: '{{ route("ventes.index") }}', icon: '💰' },
-                { name: 'Achats', url: '{{ route("achats.index") }}', icon: '🛒' },
-                { name: 'Catégories', url: '{{ route("categories.index") }}', icon: '📑' },
-                { name: 'Tâches', url: '{{ route("taches.employe") }}', icon: '✅' },
-                { name: 'Objectifs', url: '{{ route("objectifs.index") }}', icon: '🎯' },
+                { name: 'Tableau de bord', url: '{{ route("dashboard") }}', icon: icon('M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z') },
+                { name: 'Gestion des Employés', url: '{{ route("users.index") }}', icon: icon('M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4zm6 0a4 4 0 10-4-4') },
+                { name: 'Départements', url: '{{ route("departements.index") }}', icon: icon('M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2M5 21h2m0 0h10M7 21v-4a1 1 0 011-1h2a1 1 0 011 1v4M9 7h1m-1 4h1m4-4h1m-1 4h1') },
+                { name: 'Pointages', url: '{{ route("pointage.adminindex") }}', icon: icon('M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z') },
+                { name: 'Congés', url: '{{ route("conges") }}', icon: icon('M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z') },
+                { name: 'Produits', url: '{{ route("produits.index") }}', icon: icon('M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4') },
+                { name: 'Stocks', url: '{{ route("stocks.index") }}', icon: icon('M5 8h14M5 8a2 2 0 01-2-2V4a2 2 0 012-2h14a2 2 0 012 2v2a2 2 0 01-2 2M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4') },
+                { name: 'Ventes', url: '{{ route("ventes.index") }}', icon: icon('M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z') },
+                { name: 'Achats', url: '{{ route("achats.index") }}', icon: icon('M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z') },
+                { name: 'Catégories', url: '{{ route("categories.index") }}', icon: icon('M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z') },
+                { name: 'Tâches', url: '{{ route("taches.employe") }}', icon: icon('M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z') },
+                { name: 'Objectifs', url: '{{ route("objectifs.index") }}', icon: icon('M3 3v18M3 4h13l-2 4 2 4H3') },
             ];
 
             searchInput.addEventListener('input', function(e) {
@@ -234,16 +286,16 @@
                     if (filtered.length > 0) {
                         filtered.forEach(item => {
                             const li = document.createElement('li');
-                            // MISE À JOUR ICI : Couleurs adaptées au thème foncé
+                            // Icônes SVG adaptées au thème foncé (currentColor hérite du span parent)
                             li.innerHTML = `
                             <a href="${item.url}" class="px-4 py-3 hover:bg-slate-700 cursor-pointer flex items-center gap-3 transition-colors border-b border-slate-700/50 last:border-0">
-                                <span class="text-xl">${item.icon}</span>
+                                <span class="flex-shrink-0 text-blue-500">${item.icon}</span>
                                 <span class="font-medium text-slate-200">${item.name}</span>
                             </a>`;
                             searchList.appendChild(li);
                         });
                     } else {
-                        // MISE À JOUR ICI : Message aucun résultat
+                        // Message aucun résultat
                         searchList.innerHTML = '<li class="px-4 py-4 text-slate-500 text-center text-sm italic">Aucun module trouvé</li>';
                     }
                     searchResults.classList.remove('hidden');

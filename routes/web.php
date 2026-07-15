@@ -5,9 +5,11 @@ use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\CongeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ObjectifController;
 use App\Http\Controllers\PointageController;
 use App\Http\Controllers\ProduitController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\TacheController;
 use App\Http\Controllers\UserController;
@@ -75,6 +77,20 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('ventes', VenteController::class);
     //categories
     Route::resource('categories', CategorieController::class);
+    //notif
+    Route::get('/notifications', [NotificationController::class, 'index'])
+        ->name('notifications.index');
+    // =========================
+// Profil utilisateur
+// =========================
+Route::get('/profile', [ProfileController::class, 'edit'])
+    ->name('profile.edit');
+
+Route::patch('/profile', [ProfileController::class, 'update'])
+    ->name('profile.update');
+
+Route::delete('/profile', [ProfileController::class, 'destroy'])
+    ->name('profile.destroy');
 
     // ====================================================
     // MODULES RÉSERVÉS UNIQUEMENT AUX ADMINS & MANAGERS
@@ -86,8 +102,11 @@ Route::middleware(['auth'])->group(function () {
 
         // --- Tâches (Création et assignation uniquement par l'Admin/Manager) ---
         Route::get('/taches/create', [TacheController::class, 'create'])->name('taches.create');
+// Route pour enregistrer la création d'une tâche
         Route::post('/taches', [TacheController::class, 'store'])->name('taches.store');
-        Route::delete('/taches/{id}', [TacheController::class, 'destroy'])->name('taches.destroy');
+
+// Route pour afficher la liste des tâches côté admin (en GET)
+        Route::get('/taches/admin', [TacheController::class, 'index'])->name('taches.admin');        Route::delete('/taches/{id}', [TacheController::class, 'destroy'])->name('taches.destroy');
         Route::get('/taches/{id}/edit', [TacheController::class, 'edit'])->name('taches.edit');
         Route::put('/taches/{id}', [TacheController::class, 'update'])->name('taches.update');
         

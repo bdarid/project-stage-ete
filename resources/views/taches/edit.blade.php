@@ -64,7 +64,7 @@
             </x-erp.select>
 
             <x-erp.form-actions>
-                <x-erp.button href="{{ route('taches.index') }}" color="gray">
+                <x-erp.button href="{{ route('taches.admin') }}" color="gray">
                     Annuler
                 </x-erp.button>
                 <x-erp.button type="submit">

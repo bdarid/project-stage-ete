@@ -1,110 +1,91 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-bold text-xl text-slate-100 leading-tight">
-                {{ __('Espace Collaborateur - Mon ERP') }}
-            </h2>
-            <span class="bg-green-500/20 border border-green-500/30 text-green-400 text-xs font-black px-3 py-1.5 rounded-md uppercase tracking-wider shadow-sm">
-                Session Employé
-            </span>
-        </div>
+        <h2 class="font-bold text-xl text-slate-100">Tableau de Bord Employé</h2>
     </x-slot>
 
     <div class="py-8 bg-slate-900 min-h-screen">
-        <div class="max-w-8xl mx-auto sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8">
-
-
-            <main class="flex-1 space-y-6">
-
-                <div class="bg-slate-800 rounded-2xl shadow-sm border border-slate-700 p-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div>
-                        <h2 class="text-2xl font-bold text-white">Bonjour {{ Auth::user()->name ?? 'Collaborateur' }} 👋</h2>
-                        <p class="text-slate-400 text-sm mt-1">Voici le résumé de votre journée et vos tâches en cours.</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-sm text-slate-400">Date du jour</p>
-                        <p class="text-lg font-bold text-blue-400">{{ now()->format('d M Y') }}</p>
-                    </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            
+            <!-- Statistiques Rapides -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="p-5 bg-slate-800 border border-slate-700 rounded-2xl shadow-sm">
+                    <p class="text-xs font-bold text-green-400 uppercase tracking-wider">Heures ce mois</p>
+                    <p class="text-3xl font-black text-white mt-2">{{ $heuresMois }}<span class="text-lg text-slate-500">h</span></p>
                 </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <div class="p-5 bg-slate-800 border border-slate-700 hover:border-green-500/50 transition-colors rounded-2xl shadow-sm relative overflow-hidden">
-                        <div class="absolute top-0 right-0 p-4 opacity-10">
-                            <svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <p class="text-xs font-bold text-green-400 uppercase tracking-wider relative z-10">Heures ce mois</p>
-                        <p class="text-3xl font-black text-slate-100 mt-2 relative z-10">142<span class="text-lg font-medium text-slate-500">h</span></p>
-                    </div>
-
-                    <div class="p-5 bg-slate-800 border border-slate-700 hover:border-amber-500/50 transition-colors rounded-2xl shadow-sm relative overflow-hidden">
-                        <div class="absolute top-0 right-0 p-4 opacity-10">
-                            <svg class="w-16 h-16 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-                        </div>
-                        <p class="text-xs font-bold text-amber-400 uppercase tracking-wider relative z-10">Mes Tâches</p>
-                        <p class="text-3xl font-black text-slate-100 mt-2 relative z-10">3 <span class="text-sm font-medium text-slate-500">À faire</span></p>
-                    </div>
-
-                    <div class="p-5 bg-slate-800 border border-slate-700 hover:border-purple-500/50 transition-colors rounded-2xl shadow-sm relative overflow-hidden">
-                        <div class="absolute top-0 right-0 p-4 opacity-10">
-                            <svg class="w-16 h-16 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        </div>
-                        <p class="text-xs font-bold text-purple-400 uppercase tracking-wider relative z-10">Solde de Congés</p>
-                        <p class="text-3xl font-black text-slate-100 mt-2 relative z-10">18 <span class="text-sm font-medium text-slate-500">Jours</span></p>
-                    </div>
+                <div class="p-5 bg-slate-800 border border-slate-700 rounded-2xl shadow-sm">
+                    <p class="text-xs font-bold text-blue-400 uppercase tracking-wider">Nombre de taches en cours</p>
+                    <p class="text-3xl font-black text-white mt-2">{{ $tachesEnCours }}</p>
                 </div>
+                <div class="p-5 bg-slate-800 border border-slate-700 rounded-2xl shadow-sm">
+                    <p class="text-xs font-bold text-red-400 uppercase tracking-wider">Nombre de taches en retard</p>
+                    <p class="text-3xl font-black text-white mt-2">{{ $tachesEnRetard }}</p>
+                </div>
+                <div class="p-5 bg-slate-800 border border-slate-700 rounded-2xl shadow-sm">
+                    <p class="text-xs font-bold text-purple-400 uppercase tracking-wider">Solde Congés</p>
+                    <p class="text-3xl font-black text-white mt-2">{{ $soldeConges }} <span class="text-sm text-slate-500">Jours</span></p>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6">
+    <h2 class="text-lg font-bold text-white mb-2">
+        Mon Profil
+    </h2>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <p class="text-slate-400 text-sm mb-5">
+        Modifiez vos informations personnelles et votre mot de passe.
+    </p>
 
-                    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-sm">
-                        <h3 class="text-lg font-bold text-slate-100 mb-4 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            Action Rapide
+    <a href="{{ route('profile.edit') }}"
+       class="inline-flex items-center px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold transition">
+        Accéder au profil
+    </a>
+</div>
+            </div>
+
+            <!-- Contenu Principal -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- Liste des Tâches en Retard (Alerte) -->
+                <div class="bg-slate-800 border border-red-500/20 rounded-2xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-red-400 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            Tâches en retard
                         </h3>
-                        <div class="flex flex-col items-center justify-center p-6 border-2 border-dashed border-slate-700 rounded-xl bg-slate-800/50">
-                            <p class="text-slate-400 text-sm mb-4 text-center">N'oubliez pas de signaler votre arrivée pour que vos heures soient comptabilisées.</p>
-                            <form action="{{ route('pointage.index') }}" method="GET">
-                                <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg shadow-blue-500/30 transition-all flex items-center gap-2">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
-                                    Pointer mon Entrée
-                                </button>
-                            </form>
-                        </div>
                     </div>
-
-                    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-sm">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-bold text-slate-100 flex items-center gap-2">
-                                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-                                À traiter aujourd'hui
-                            </h3>
-                            <a href="{{ route('taches.index') }}" class="text-sm text-blue-400 hover:text-blue-300 font-medium">Voir tout</a>
-                        </div>
-
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-3 p-3 bg-slate-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors">
-                                <div class="mt-0.5">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-700 text-blue-500 focus:ring-blue-500/50 focus:ring-offset-slate-900">
-                                </div>
+                    <ul class="space-y-3">
+                        @forelse($taches->where('statut', 'en retard') as $tache)
+                            <li class="p-4 bg-red-500/5 rounded-xl border border-red-500/10 flex justify-between items-center">
                                 <div>
-                                    <p class="text-sm font-medium text-slate-200">Vérifier l'inventaire des produits A</p>
-                                    <p class="text-xs text-amber-400 mt-1">Échéance : Aujourd'hui</p>
+                                    <p class="text-sm font-bold text-slate-200">{{ $tache->titre_taches }}</p>
+                                    <p class="text-xs text-red-400 mt-1">Échéance : {{ \Carbon\Carbon::parse($tache->date_fin)->format('d/m/Y') }}</p>
                                 </div>
+                                <span class="px-2 py-1 bg-red-500/20 text-red-500 text-[10px] font-bold uppercase rounded">Urgent</span>
                             </li>
-                            <li class="flex items-start gap-3 p-3 bg-slate-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors">
-                                <div class="mt-0.5">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-700 text-blue-500 focus:ring-blue-500/50 focus:ring-offset-slate-900">
-                                </div>
-                                <div>
-                                    <p class="text-sm font-medium text-slate-200">Envoyer le rapport des ventes</p>
-                                    <p class="text-xs text-slate-500 mt-1">Échéance : Demain</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                        @empty
+                            <p class="text-slate-500 text-sm italic">Aucune tâche en retard. Bravo !</p>
+                        @endforelse
+                    </ul>
                 </div>
 
-            </main>
-
+                <!-- Liste des Tâches en cours -->
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-slate-100 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                            Tâches en cours
+                        </h3>
+                    </div>
+                    <ul class="space-y-3">
+                        @forelse($taches->where('statut', 'en cours') as $tache)
+                            <li class="p-4 bg-slate-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors">
+                                <p class="text-sm font-medium text-slate-200">{{ $tache->titre_taches }}</p>
+                                <p class="text-xs text-slate-500 mt-1">Début : {{ \Carbon\Carbon::parse($tache->date_debut)->format('d/m/Y') }}</p>
+                            </li>
+                        @empty
+                            <p class="text-slate-500 text-sm italic">Aucune tâche active.</p>
+                        @endforelse
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </x-app-layout>

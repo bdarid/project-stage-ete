@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Notification;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -23,8 +26,19 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        Schema::defaultStringLength(191);
-    }
+    public function boot(): void
+{
+    View::composer('*', function ($view) {
+
+        $nbNotifications = 0;
+
+        if (Auth::check()) {
+            $nbNotifications = Notification::where('users_id', Auth::id())
+                ->where('lu', false)
+                ->count();
+        }
+
+        $view->with('nbNotifications', $nbNotifications);
+    });
+}
 }

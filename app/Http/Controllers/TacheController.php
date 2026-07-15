@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\NouvelleTacheNotification;
 use Illuminate\Support\Facades\DB;
 use App\Models\Users; 
+use App\Services\NotificationService;
 
 class TacheController extends Controller
 {
     // Afficher la liste des tâches (Admin ou Employé)
     public function index(Request $request)
     {
-        // ... (votre code index actuel)
         $user = Auth::user();
 
         $query = DB::table('taches')
@@ -71,7 +72,7 @@ class TacheController extends Controller
     {
         DB::table('user_taches')->where('taches_id', $id)->delete();
         DB::table('taches')->where('id', $id)->delete();
-        return redirect()->route('taches.index')->with('success', 'Tâche supprimée avec succès.');
+        return redirect()->route('taches.admin')->with('success', 'Tâche supprimée avec succès.');
     }
 
     public function create()
@@ -110,8 +111,26 @@ class TacheController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        $user = Users::findOrFail($request->user_id);
 
-        return redirect()->route('taches.index')->with('success', 'Tâche assignée avec succès !');
+// Notification dans la cloche
+NotificationService::send(
+    $user->id,
+    'Nouvelle tâche',
+    'Une nouvelle tâche vous a été assignée : "' . $request->titre_taches . '".',
+    'info'
+);
+
+// Email
+$user->notify(
+    new NouvelleTacheNotification((object)[
+        'titre' => $request->titre_taches,
+        'priorite' => $request->priorite,
+        'date_limite' => $request->date_fin,
+    ])
+);
+
+        return redirect()->route('taches.admin')->with('success', 'Tâche assignée avec succès ! Email envoye a lemploye');
     }
 
     public function updateStatut(Request $request, $id)
@@ -124,6 +143,16 @@ class TacheController extends Controller
             'statut' => $request->statut,
             'updated_at' => now(),
         ]);
+        if ($request->statut === 'fini') {
+
+    $tache = DB::table('taches')->where('id', $id)->first();
+
+    NotificationService::sendToAdmins(
+        'Tâche terminée',
+        Auth::user()->name_users . ' a terminé la tâche "' . $tache->titre_taches . '".',
+        'success'
+    );
+}
 
         return redirect()->back()->with('success', 'Statut mis à jour !');
     }
@@ -159,6 +188,6 @@ class TacheController extends Controller
             'users_id' => $request->user_id,
         ]);
 
-        return redirect()->route('taches.index')->with('success', 'Tâche modifiée avec succès !');
+        return redirect()->route('taches.admin')->with('success', 'Tâche modifiée avec succès !');
     }
 }
